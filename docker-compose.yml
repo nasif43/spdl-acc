@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   postgres:
     image: postgres:15
@@ -35,6 +33,20 @@ services:
     ports:
       - "5000:5000"
     image: spdl-frontend
+
+  spdl-migrate:
+    build: ./backend
+    container_name: spdl-migrate
+    entrypoint: [ "bash", "-c", "alembic upgrade head" ]
+    environment:
+      DATABASE_URL: "postgresql://myuser:mypassword@postgres:5432/mydatabase"
+      DB_USER: "myuser"
+      DB_PASSWORD: "mypassword"
+      DB_HOST: "postgres"
+      DB_PORT: "5432"
+      DB_NAME: "mydatabase"
+    depends_on:
+      - postgres
 
 volumes:
   postgres_data:
