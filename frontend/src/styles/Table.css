@@ -1,0 +1,184 @@
+/* Table.css */
+
+/* General styles */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 20px;
+    background-color: #f9f9f9;
+}
+
+/* Table styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    table-layout: fixed; /* Ensure table layout is fixed */
+    transition: transform 0.3s ease;
+}
+
+table:hover {
+    transform: scale(1.02); /* Slightly scale up the table on hover */
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    word-wrap: break-word; /* Prevent content overflow */
+    transition: background-color 0.3s ease; /* Smooth background transition */
+}
+
+th {
+    background-color: #080550;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+tr {
+    transition: background-color 0.3s ease; /* Smooth transition for rows */
+}
+
+tr:hover {
+    background-color: rgba(0, 128, 255, 0.1); /* Light blue background on hover */
+}
+
+/* Form styles */
+form {
+    background-color: white;
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease; /* Smooth shadow transition */
+}
+
+form:hover {
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2); /* Increase shadow on hover */
+}
+
+h2 {
+    margin-top: 0;
+    color: #333;
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+    color: #555;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="date"],
+input[type="checkbox"] {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    transition: border 0.2s, box-shadow 0.2s; /* Added box-shadow transition */
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+input[type="date"]:focus {
+    border-color: #080550;
+    box-shadow: 0 0 5px rgba(0, 128, 255, 0.5); /* Subtle glow effect */
+}
+
+button {
+    background-color: #080550;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin-top: 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s, transform 0.2s; /* Added transform transition */
+}
+
+button:hover {
+    background-color: #45a049;
+    transform: translateY(-2px); /* Lift effect on hover */
+}
+
+/* Responsive styles */
+@media (max-width: 600px) {
+    /* For mobile devices */
+    table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    th, td {
+        display: block;
+        text-align: right;
+    }
+
+    th {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        background: #080550;
+        color: white;
+        text-align: left;
+    }
+
+    td {
+        position: relative;
+        padding-left: 50%;
+        white-space: normal;
+    }
+
+    td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 0;
+        width: 50%;
+        padding-left: 10px;
+        font-weight: bold;
+        white-space: nowrap;
+    }
+
+    form {
+        display: block; /* Show form as a block */
+        margin-top: 20px; /* Add margin for spacing */
+    }
+
+    .add-more-button {
+        display: none; /* Hide the button */
+    }
+}
+
+@media (min-width: 601px) {
+    /* For larger screens */
+    .form-container {
+        display: none; /* Hide form container on larger screens */
+    }
+
+    .add-more-button {
+        display: inline-block; /* Show the add more button */
+        background-color: #080550;
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.2s; /* Added transform transition */
+    }
+
+    .add-more-button:hover {
+        background-color: #45a049;
+        transform: translateY(-2px); /* Lift effect on hover */
+    }
+}
