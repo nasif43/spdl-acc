@@ -2,6 +2,7 @@ import { h } from 'preact';
 import { useEffect, useState } from 'preact/hooks';
 import '../styles/Table.css';
 
+const API_URI = process.env.REACT_APP_API_URL || 'http://localhost:4000';
 const PaymentHistory = ({ project_id, unitId }) => {
     const [payments, setPayments] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -21,7 +22,7 @@ const PaymentHistory = ({ project_id, unitId }) => {
         }
 
         // Fetch payment history for the selected unit
-        fetch(`http://103.191.241.13:4000/payment_history/${unitId}`)
+        fetch(`${API_URI}/payment_history/${unitId}`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -54,7 +55,7 @@ const PaymentHistory = ({ project_id, unitId }) => {
         };
 
         // Post the new payment data to the server
-        fetch('http://103.191.241.13:4000/payment_history/', {
+        fetch(`${API_URI}/payment_history/`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

@@ -2,6 +2,8 @@ import { h } from 'preact';
 import { useState } from 'preact/hooks';
 import '../styles/Table.css'; // Assuming you have some basic styles for the table
 
+const API_URI = process.env.REACT_APP_API_URL || 'http://localhost:4000';
+
 function DailyBillsCard({ project_id }) {
   const [bills, setBills] = useState([]);
   const [showForm, setShowForm] = useState(false);
@@ -20,7 +22,7 @@ function DailyBillsCard({ project_id }) {
   const fetchBills = () => {
     setLoading(true);
     const token = localStorage.getItem('token'); // Retrieve the token
-    fetch(`http://103.191.241.13:4000/daily_billings/${project_id}`, {
+    fetch(`${API_URI}/daily_billings/${project_id}`, {
       headers: {
         'Authorization': `Bearer ${token}`, // Include the token
       },
@@ -64,7 +66,7 @@ function DailyBillsCard({ project_id }) {
       return;
     }
 
-    fetch('http://103.191.241.13:4000/daily_billings/', {
+    fetch(`${API_URI}/daily_billings/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

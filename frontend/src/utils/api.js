@@ -1,6 +1,6 @@
 // src/utils/api.js
 
-const API_BASE_URL = 'http://103.191.241.13:4000'; // Update this as needed
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:4000'; // Update this as needed
 
 export const fetchWithAuth = async (url, options = {}) => {
     const token = localStorage.getItem('token');

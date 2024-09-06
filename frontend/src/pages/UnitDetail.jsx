@@ -1,12 +1,12 @@
 import { h } from 'preact';
 import { useEffect, useState } from 'preact/hooks';
-
+const API_URI = process.env.REACT_APP_API_URL || 'http://localhost:4000';
 const UnitDetail = ({ unitId }) => {
     const [payments, setPayments] = useState([]);
 
     useEffect(() => {
         // Fetch payment history for the selected unit
-        fetch(`http://103.191.241.13:4000/payment_history/${unitId}`)
+        fetch(`${API_URI}/payment_history/${unitId}`)
             .then(response => response.json())
             .then(data => setPayments(data))
             .catch(error => console.error('Error fetching payment history:', error));

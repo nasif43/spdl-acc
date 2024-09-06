@@ -4,6 +4,7 @@ import ProjectCard from '../components/ProjectCard';
 import ProjectCreateForm from '../components/ProjectCreateForm';
 import '../styles/ProjectList.css';
 
+const API_URI = process.env.REACT_APP_API_URL || 'http://localhost:4000';
 function ProjectList() {
   const router = useRouter();
   const [projects, setProjects] = useState([]);
@@ -13,7 +14,7 @@ function ProjectList() {
   useEffect(() => {
     async function fetchProjects() {
       try {
-        const response = await fetch('http://103.191.241.13:4000/projects?page=1');
+        const response = await fetch(`${API_URI}/projects?page=1`);
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }

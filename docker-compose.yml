@@ -1,3 +1,5 @@
+version: '3.10'
+
 services:
   postgres:
     image: postgres:15
@@ -14,7 +16,7 @@ services:
   fastapi:
     build: ./backend
     container_name: spdl-backend
-    command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+    command: ["bash", "-c", "uvicorn app.main:app --host 0.0.0.0 --port 8000"]
     environment:
       DATABASE_URL: "postgresql://myuser:mypassword@postgres:5432/mydatabase"
       DB_USER: "myuser"
@@ -33,20 +35,8 @@ services:
     ports:
       - "5000:5000"
     image: spdl-frontend
-
-  spdl-migrate:
-    build: ./backend
-    container_name: spdl-migrate
-    entrypoint: [ "bash", "-c", "alembic upgrade head" ]
     environment:
-      DATABASE_URL: "postgresql://myuser:mypassword@postgres:5432/mydatabase"
-      DB_USER: "myuser"
-      DB_PASSWORD: "mypassword"
-      DB_HOST: "postgres"
-      DB_PORT: "5432"
-      DB_NAME: "mydatabase"
-    depends_on:
-      - postgres
+      REACT_APP_API_URL: "http://fastapi:8000" # Use the Docker service name
 
 volumes:
   postgres_data:

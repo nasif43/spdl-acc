@@ -3,6 +3,7 @@ import { useEffect, useState } from 'preact/hooks';
 import { Link } from 'preact-router'; // Import Link for navigation
 import '../styles/Table.css';
 
+const API_URI = process.env.REACT_APP_API_URL || 'http://localhost:4000';
 const AddUnitForm = ({ projectId, onUnitAdded }) => {
     const [unitName, setUnitName] = useState('');
     const [date, setDate] = useState('');
@@ -28,7 +29,7 @@ const AddUnitForm = ({ projectId, onUnitAdded }) => {
             sold: sold,
         };
 
-        fetch('http://103.191.241.13:4000/units/', {
+        fetch(`${API_URI}/units/`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -138,7 +139,7 @@ const ProjectDetail = ({ id }) => {
             return;
         }
 
-        fetch(`http://103.191.241.13:4000/units/?project_id=${id}`)
+        fetch(`${API_URI}/units/?project_id=${id}`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -161,7 +162,7 @@ const ProjectDetail = ({ id }) => {
 
     const handleUnitAdded = () => {
         setShowAddUnitForm(false);
-        fetch(`http://103.191.241.13:4000/units/?project_id=${id}`)
+        fetch(`${API_URI}/units/?project_id=${id}`)
             .then(response => response.json())
             .then(data => setUnits(data))
             .catch(error => console.error('Error fetching units:', error));

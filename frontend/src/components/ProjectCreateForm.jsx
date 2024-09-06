@@ -1,6 +1,7 @@
 import { h } from 'preact';
 import { useState } from 'preact/hooks';
 
+const API_URI = process.env.REACT_APP_API_URL || 'http://localhost:4000';
 function ProjectCreateForm() {
     const [formData, setFormData] = useState({
         name: '',
@@ -27,7 +28,7 @@ function ProjectCreateForm() {
         setSuccessMessage(null);
 
         try {
-            const response = await fetch('http://103.191.241.13:4000/projects', {
+            const response = await fetch(`${API_URI}/projects`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

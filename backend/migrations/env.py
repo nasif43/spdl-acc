@@ -11,7 +11,7 @@ load_dotenv()
 config = context.config
 
 # Update the sqlalchemy.url with environment variables
-config.set_main_option('sqlalchemy.url', f"postgresql://{os.getenv('DB_USER')}:{os.getenv('DB_PASSWORD')}@{os.getenv('DB_HOST')}:{os.getenv('DB_PORT')}/{os.getenv('DB_NAME')}")
+config.set_main_option('sqlalchemy.url', f"postgresql://myuser:mypassword@postgres:5432/mydatabase")
 
 # Interpret the config file for Python logging.
 if config.config_file_name is not None:

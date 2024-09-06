@@ -7,7 +7,7 @@ app = FastAPI()
 
 # Define allowed origins
 origins = [
-    "http://localhost:5173",  # Allow your frontend application
+    "http://localhost:5000",  # Allow your frontend application
     "http://127.0.0.1:5173", # Allow localhost access
     "http://172.30.240.1:5173/"
 ]

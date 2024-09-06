@@ -8,7 +8,7 @@ __pycache__/
 # Ignore virtual environments
 venv/
 .env/
-
+backend/env/
 # Ignore node modules (for the frontend)
 frontend/node_modules/
 
