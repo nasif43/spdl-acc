@@ -4,7 +4,9 @@ import { Link } from 'preact-router'; // Import Link for navigation
 import '../styles/Table.css';
 
 const API_URI = process.env.REACT_APP_API_URL || 'http://localhost:4000';
+
 const AddUnitForm = ({ projectId, onUnitAdded }) => {
+    // Form state management code remains the same
     const [unitName, setUnitName] = useState('');
     const [date, setDate] = useState('');
     const [clientName, setClientName] = useState('');
@@ -52,6 +54,7 @@ const AddUnitForm = ({ projectId, onUnitAdded }) => {
     return (
         <form onSubmit={handleSubmit}>
             <h2>Add New Unit</h2>
+            {/* Form inputs remain the same */}
             <label>
                 Unit Name:
                 <input
@@ -168,6 +171,24 @@ const ProjectDetail = ({ id }) => {
             .catch(error => console.error('Error fetching units:', error));
     };
 
+    // const handleDeleteUnit = (unitId) => {
+    //     if (!window.confirm('Are you sure you want to delete this unit?')) {
+    //         return;
+    //     }
+
+    //     fetch(`${API_URI}/units/${unitId}`, {
+    //         method: 'DELETE',
+    //     })
+    //         .then(response => {
+    //             if (!response.ok) {
+    //                 throw new Error('Failed to delete unit');
+    //             }
+    //             setUnits(units.filter(unit => unit.id !== unitId));
+    //             console.log('Unit deleted successfully');
+    //         })
+    //         .catch(error => console.error('Error deleting unit:', error));
+    // };
+
     if (loading) {
         return <div>Loading...</div>;
     }
@@ -207,10 +228,13 @@ const ProjectDetail = ({ id }) => {
                                 <td>{unit.sold ? 'Sold' : 'Available'}</td>
                                 <td>
                                     <button>
-                                        <Link href={`/payment_history/${id}/${unit.id}`} style={{ color: 'white'}}>
+                                        <Link href={`/payment_history/${id}/${unit.id}`} style={{ color: 'white' }}>
                                             View Payments
                                         </Link>
                                     </button>
+                                    {/* <button onClick={() => handleDeleteUnit(unit.id)}>
+                                        Delete
+                                    </button> */}
                                 </td>
                             </tr>
                         ))

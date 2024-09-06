@@ -77,6 +77,9 @@ class DailyBillingCreate(BaseModel):
     paid: Optional[float] = Field(default=None, ge=0)  # Optional, default None
     user_id: Optional[int] = None  # Optional, defaults to None
     upfront_cost: bool = False
+    labours: Optional[int] = None
+    notes: Optional[str] = None
+
 
 class DailyBilling(DailyBillingBase):
     id: int

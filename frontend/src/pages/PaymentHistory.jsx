@@ -3,25 +3,25 @@ import { useEffect, useState } from 'preact/hooks';
 import '../styles/Table.css';
 
 const API_URI = process.env.REACT_APP_API_URL || 'http://localhost:4000';
+
 const PaymentHistory = ({ project_id, unitId }) => {
     const [payments, setPayments] = useState([]);
     const [loading, setLoading] = useState(true);
     const [amount, setAmount] = useState('');
     const [date, setDate] = useState('');
-    const [description, setDescription] = useState(''); // Added state
-    const [cash_bank, setCashBank] = useState('Cash'); // Added state with default value
-    const [remarks, setRemarks] = useState(''); // Added state
+    const [description, setDescription] = useState('');
+    const [cash_bank, setCashBank] = useState('Cash');
+    const [remarks, setRemarks] = useState('');
     const [error, setError] = useState('');
     const [showForm, setShowForm] = useState(false);
 
     useEffect(() => {
         if (!unitId) {
             console.error('Unit ID is undefined');
-            setLoading(false); // Make sure loading state is updated
+            setLoading(false);
             return;
         }
 
-        // Fetch payment history for the selected unit
         fetch(`${API_URI}/payment_history/${unitId}`)
             .then(response => {
                 if (!response.ok) {
@@ -35,7 +35,7 @@ const PaymentHistory = ({ project_id, unitId }) => {
             })
             .catch(error => {
                 console.error('Error fetching payment history:', error);
-                setError('Failed to fetch payment history. Please try again.'); // Set error state
+                setError('Failed to fetch payment history. Please try again.');
                 setLoading(false);
             });
     }, [unitId]);
@@ -43,7 +43,6 @@ const PaymentHistory = ({ project_id, unitId }) => {
     const handleAddPayment = (event) => {
         event.preventDefault();
         
-        // Construct the new payment data
         const newPayment = {
             project_id: project_id,
             unit_id: unitId,
@@ -54,7 +53,6 @@ const PaymentHistory = ({ project_id, unitId }) => {
             remarks: remarks,
         };
 
-        // Post the new payment data to the server
         fetch(`${API_URI}/payment_history/`, {
             method: 'POST',
             headers: {
@@ -69,18 +67,34 @@ const PaymentHistory = ({ project_id, unitId }) => {
                 return response.json();
             })
             .then(data => {
-                setPayments([...payments, data]); // Add the new payment to the existing list
+                setPayments([...payments, data]);
                 setAmount('');
                 setDate('');
-                setDescription(''); // Clear input
-                setCashBank('Cash'); // Reset to default
-                setRemarks(''); // Clear input
+                setDescription('');
+                setCashBank('Cash');
+                setRemarks('');
                 setError('');
-                setShowForm(false); // Hide the form after submission
+                setShowForm(false);
             })
             .catch(error => {
                 console.error('Error adding payment:', error);
                 setError('Failed to add payment. Please try again.');
+            });
+    };
+
+    const handleDeletePayment = (paymentId) => {
+        fetch(`${API_URI}/payment_history/${paymentId}`, {
+            method: 'DELETE',
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to delete payment');
+                }
+                setPayments(payments.filter(payment => payment.id !== paymentId)); // Remove the deleted payment from the state
+            })
+            .catch(error => {
+                console.error('Error deleting payment:', error);
+                setError('Failed to delete payment. Please try again.');
             });
     };
 
@@ -101,14 +115,13 @@ const PaymentHistory = ({ project_id, unitId }) => {
                         <th>Description (বিবরণ)</th>
                         <th>Cash/Bank</th>
                         <th>Amount</th>
-                        <th>Due</th>
-                        <th>Remarks</th>
+                        <th>Actions</th> {/* Added column for delete button */}
                     </tr>
                 </thead>
                 <tbody>
                     {payments.length === 0 ? (
                         <tr>
-                            <td colSpan="5">No payment history available for this unit.</td>
+                            <td colSpan="7">No payment history available for this unit.</td>
                         </tr>
                     ) : (
                         payments.map(payment => (
@@ -118,6 +131,9 @@ const PaymentHistory = ({ project_id, unitId }) => {
                                 <td>{payment.cash_bank}</td>
                                 <td>{payment.amount}</td>
                                 <td>{payment.remarks}</td>
+                                <td>
+                                    <button onClick={() => handleDeletePayment(payment.id)}>Delete</button>
+                                </td>
                             </tr>
                         ))
                     )}
@@ -145,7 +161,6 @@ const PaymentHistory = ({ project_id, unitId }) => {
                             type="text"
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
-                            
                         />
                     </label>
                     <label>
@@ -166,15 +181,6 @@ const PaymentHistory = ({ project_id, unitId }) => {
                             value={amount}
                             onChange={(e) => setAmount(e.target.value)}
                             required
-                        />
-                    </label>
-                    <label>
-                        Remarks:
-                        <input
-                            type="text"
-                            value={remarks}
-                            onChange={(e) => setRemarks(e.target.value)}
-                            
                         />
                     </label>
                     <button type="submit">Submit Payment</button>

@@ -20,14 +20,14 @@ def read_units(project_id: int, db: Session = Depends(get_db)):
 
 @router.delete("/{unit_id}", response_model=schemas.Unit)
 def delete_unit(unit_id: int, db: Session = Depends(get_db)):
-    db_unit = crud.get_unit(db=db, unit_id=unit_id)
+    db_unit = crud.get_units(db=db, unit_id=unit_id)
     if db_unit is None:
         raise HTTPException(status_code=404, detail="Unit not found")
     return crud.delete_unit(db=db, unit_id=unit_id)
 
 @router.put("/{unit_id}", response_model=schemas.Unit)
 def update_unit(unit_id: int, unit: schemas.UnitUpdate, db: Session = Depends(get_db)):
-    db_unit = crud.get_unit(db=db, unit_id=unit_id)
+    db_unit = crud.get_units(db=db, unit_id=unit_id)
     if db_unit is None:
         raise HTTPException(status_code=404, detail="Unit not found")
     return crud.update_unit(db=db, unit_id=unit_id, unit=unit)

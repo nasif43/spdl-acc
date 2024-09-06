@@ -11,20 +11,21 @@ function DailyBillsCard({ project_id }) {
   const [upFrontCost, setUpFrontCost] = useState(false);
   const [date, setDate] = useState('');
   const [description, setDescription] = useState('');
-  const [labours, setLabours] = useState(0); // Initialize to 0 for numeric input
-  const [due, setDue] = useState(0); // Due is Bill in database
-  const [paid, setPaid] = useState(0); // Initialize to 0 for numeric input
+  const [labours, setLabours] = useState(0);
+  const [due, setDue] = useState(0);
+  const [paid, setPaid] = useState(0);
   const [note, setNote] = useState('');
+  const [editId, setEditId] = useState(null); // For editing
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
   // Fetch bills on button click
   const fetchBills = () => {
     setLoading(true);
-    const token = localStorage.getItem('token'); // Retrieve the token
+    const token = localStorage.getItem('token');
     fetch(`${API_URI}/daily_billings/${project_id}`, {
       headers: {
-        'Authorization': `Bearer ${token}`, // Include the token
+        'Authorization': `Bearer ${token}`,
       },
     })
       .then(response => {
@@ -36,8 +37,8 @@ function DailyBillsCard({ project_id }) {
       .then(data => {
         setBills(data);
         setLoading(false);
-        setShowTable(true); // Show the table when data is fetched
-        setShowForm(false); // Hide the form when showing the table
+        setShowTable(true);
+        setShowForm(false);
       })
       .catch(err => {
         console.error('Failed to fetch bills:', err);
@@ -46,62 +47,114 @@ function DailyBillsCard({ project_id }) {
       });
   };
 
-  const handleAddBill = (e) => {
+  const handleAddOrUpdateBill = (e) => {
     e.preventDefault();
-    const newBill = {
+    const billData = {
       project_id: project_id,
-      unfront_cost: upFrontCost, // Assuming this is a boolean value
+      unfront_cost: upFrontCost,
       date,
       description,
-      labours: parseInt(labours), // Ensure labours is a number
+      labours: parseInt(labours),
       due: parseFloat(due),
-      paid: parseFloat(paid), // Ensure paid is a number
+      paid: parseFloat(paid),
       note
     };
 
-    const token = localStorage.getItem('token'); // Retrieve the token
-    console.log('Token:', token); // Debugging line
+    const token = localStorage.getItem('token');
     if (!token) {
       setError('No token found. Please log in again.');
       return;
     }
 
-    fetch(`${API_URI}/daily_billings/`, {
-      method: 'POST',
+    const url = editId ? `${API_URI}/daily_billings/${editId}` : `${API_URI}/daily_billings/`;
+    const method = editId ? 'PUT' : 'POST';
+
+    fetch(url, {
+      method: method,
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`, // Include the token
+        'Authorization': `Bearer ${token}`,
       },
-      body: JSON.stringify(newBill),
+      body: JSON.stringify(billData),
     })
       .then(response => {
         if (!response.ok) {
-          console.error('Failed response:', response); // Debugging line
-          throw new Error('Failed to add bill');
+          throw new Error('Failed to add or update bill');
         }
         return response.json();
       })
       .then(data => {
-        setBills([...bills, data]); // Add the new bill to the existing list
-        setShowForm(false); // Hide the form after submission
-        setShowTable(true); // Show the table after adding a bill
-        setUpFrontCost(false); // Reset upfront cost after submission
-        setDate('');
-        setDescription('');
-        setDue('');
-        setPaid(0); // Reset paid to 0 after submission
-        setError('');
+        if (editId) {
+          setBills(bills.map(bill => (bill.id === editId ? data : bill)));
+        } else {
+          setBills([...bills, data]);
+        }
+        resetForm();
       })
       .catch(err => {
-        console.error('Error adding bill:', err);
-        setError('Failed to add bill. Please try again.');
+        console.error('Error adding or updating bill:', err);
+        setError('Failed to add or update bill. Please try again.');
       });
+  };
+
+  const handleDeleteBill = (id) => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      setError('No token found. Please log in again.');
+      return;
+    }
+
+    if (confirm('Are you sure you want to delete this bill?')) {
+      fetch(`${API_URI}/daily_billings/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Failed to delete bill');
+          }
+          setBills(bills.filter(bill => bill.id !== id));
+        })
+        .catch(err => {
+          console.error('Error deleting bill:', err);
+          setError('Failed to delete bill. Please try again.');
+        });
+    }
+  };
+
+  const handleEditBill = (bill) => {
+    setEditId(bill.id);
+    setUpFrontCost(bill.unfront_cost);
+    setDate(bill.date);
+    setDescription(bill.description);
+    setLabours(bill.labours);
+    setDue(bill.due);
+    setPaid(bill.paid);
+    setNote(bill.note);
+    setShowForm(true);
+    setShowTable(false);
+  };
+
+  const resetForm = () => {
+    setEditId(null);
+    setUpFrontCost(false);
+    setDate('');
+    setDescription('');
+    setLabours(0);
+    setDue(0);
+    setPaid(0);
+    setNote('');
+    setShowForm(false);
+    setShowTable(true);
+    setError('');
   };
 
   return (
     <div className="daily-bills-card">
       <button onClick={() => { setShowForm(false); setShowTable(true); fetchBills(); }}>View Bills</button>
-      <button onClick={() => { setShowForm(true); setShowTable(false); }}>Add Bill</button>
+      <button onClick={() => { resetForm(); setShowForm(true); setShowTable(false); }}>Add Bill</button>
 
       {error && <div className="error">{error}</div>}
       {loading && <div>Loading...</div>}
@@ -117,12 +170,13 @@ function DailyBillsCard({ project_id }) {
               <th>Bill</th>
               <th>Paid</th>
               <th>Note</th>
+              <th>Actions</th> {/* Add an actions column */}
             </tr>
           </thead>
           <tbody>
             {bills.length === 0 ? (
               <tr>
-                <td colSpan="7">No bills available for this project.</td>
+                <td colSpan="8">No bills available for this project.</td>
               </tr>
             ) : (
               bills.map(bill => (
@@ -134,6 +188,10 @@ function DailyBillsCard({ project_id }) {
                   <td>{bill.due}</td>
                   <td>{bill.paid}</td>
                   <td>{bill.note}</td>
+                  <td>
+                    {/* <button onClick={() => handleEditBill(bill)}>Edit</button> */}
+                    <button onClick={() => handleDeleteBill(bill.id)}>Delete</button>
+                  </td>
                 </tr>
               ))
             )}
@@ -142,15 +200,7 @@ function DailyBillsCard({ project_id }) {
       )}
 
       {showForm && (
-        <form onSubmit={handleAddBill}>
-          {/* <label>
-            Upfront Cost:
-            <input
-              type="checkbox"
-              checked={upFrontCost}
-              onChange={(e) => setUpFrontCost(e.target.checked)}
-            />
-          </label> */}
+        <form onSubmit={handleAddOrUpdateBill}>
           <label>
             Date:
             <input type="date" value={date} onChange={(e) => setDate(e.target.value)} required />
@@ -175,7 +225,8 @@ function DailyBillsCard({ project_id }) {
             Note:
             <textarea value={note} onChange={(e) => setNote(e.target.value)} />
           </label>
-          <button type="submit">Submit Bill</button>
+          <button type="submit">{editId ? 'Update Bill' : 'Submit Bill'}</button>
+          <button type="button" onClick={resetForm}>Cancel</button>
         </form>
       )}
     </div>

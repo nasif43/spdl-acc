@@ -38,12 +38,12 @@ function ProjectList() {
         {projects.length === 0 ? (
           <div>No projects available</div>
         ) : (
-          <div className="project-card-container">
+          <><div className="project-card-container">
             {projects.map((project) => (
               <ProjectCard key={project.id} project={project} />
             ))}
-            <ProjectCreateForm/>            
           </div>
+          <div className="project-card-container"><ProjectCreateForm/></div></>
         )}
       </div>
     );
