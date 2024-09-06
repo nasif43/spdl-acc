@@ -101,3 +101,57 @@ class UserCreate(UserBase):
 class User(UserBase):
     class Config:
         from_attributes = True
+
+# Update Schemas
+class ProjectUpdate(BaseModel):
+    name: Optional[str] = None
+    location: Optional[str] = None
+    start_date: Optional[date] = None
+    status: Optional[str] = None
+
+    class Config:
+        from_attributes = True
+
+class UnitUpdate(BaseModel):
+    unit_name: Optional[str] = None
+    date: Optional[date] = None
+    client_name: Optional[str] = None
+    client_number: Optional[str] = None
+    client_nid: Optional[str] = None
+    amount: Optional[float] = None
+    paid: Optional[float] = None
+    sold: Optional[bool] = None
+
+    class Config:
+        from_attributes = True
+
+class PaymentUpdate(BaseModel):
+    amount: Optional[float] = None
+    date: Optional[date] = None
+    description: Optional[str] = None
+    cash_bank: Optional[str] = None
+    remarks: Optional[str] = None
+
+    class Config:
+        from_attributes = True
+
+class DailyBillingUpdate(BaseModel):
+    date: Optional[date] = None
+    description: Optional[str] = None
+    labours: Optional[int] = None
+    due: Optional[float] = None
+    paid: Optional[float] = None
+    notes: Optional[str] = None
+    user_id: Optional[int] = None
+    upfront_cost: Optional[bool] = None
+
+    class Config:
+        from_attributes = True
+
+class UserUpdate(BaseModel):
+    username: Optional[str] = None
+    password: Optional[str] = None
+    usertype: Optional[str] = None
+
+    class Config:
+        from_attributes = True

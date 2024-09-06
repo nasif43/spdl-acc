@@ -65,6 +65,9 @@ def create_payment(db: Session, payment: schemas.PaymentCreate):
     db.refresh(db_payment)
     return db_payment
 
+def get_payment_by_id(db: Session, payment_id: int):
+    return db.query(models.PaymentHistory).filter(models.PaymentHistory.id == payment_id).first()
+
 def update_payment(db: Session, payment_id: int, payment: schemas.PaymentUpdate):
     try:
         db_payment = db.query(models.PaymentHistory).filter(models.PaymentHistory.id == payment_id).first()
@@ -150,3 +153,39 @@ def update_user(db: Session, user_id: int, user: schemas.UserUpdate):
     except SQLAlchemyError:
         db.rollback()
         raise
+
+# Delete records
+def delete_project(db: Session, project_id: int):
+    db_project = get_project(db, project_id)
+    if db_project:
+        db.delete(db_project)
+        db.commit()
+    return db_project
+
+def delete_unit(db: Session, unit_id: int):
+    db_unit = db.query(models.Unit).filter(models.Unit.id == unit_id).first()
+    if db_unit:
+        db.delete(db_unit)
+        db.commit()
+    return db_unit
+
+def delete_payment(db: Session, payment_id: int):
+    db_payment = db.query(models.PaymentHistory).filter(models.PaymentHistory.id == payment_id).first()
+    if db_payment:
+        db.delete(db_payment)
+        db.commit()
+    return db_payment
+
+def delete_daily_billing(db: Session, billing_id: int):
+    db_billing = db.query(models.DailyBilling).filter(models.DailyBilling.id == billing_id).first()
+    if db_billing:
+        db.delete(db_billing)
+        db.commit()
+    return db_billing
+
+def delete_user(db: Session, user_id: int):
+    db_user = db.query(models.User).filter(models.User.id == user_id).first()
+    if db_user:
+        db.delete(db_user)
+        db.commit()
+    return db_user

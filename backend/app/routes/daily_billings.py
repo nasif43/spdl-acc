@@ -68,3 +68,19 @@ def approve_daily_billing(
         raise HTTPException(status_code=404, detail="Billing record not found")
     
     return crud.approve_daily_billing(db=db, billing_id=billing_id, paid_amount=paid_amount)
+
+@router.delete("/{billing_id}")
+def delete_daily_billing(
+    billing_id: int, 
+    db: Session = Depends(get_db), 
+    current_user: User = Depends(get_current_active_user)
+):
+    if not is_authorized(current_user, ["accountant", "admin"]):
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to delete daily billings")
+    
+    billing_record = crud.get_daily_billing_by_id(db=db, billing_id=billing_id)
+    if not billing_record:
+        raise HTTPException(status_code=404, detail="Billing record not found")
+    
+    crud.delete_daily_billing(db=db, billing_id=billing_id)
+    return {"message": "Daily billing deleted successfully"}
