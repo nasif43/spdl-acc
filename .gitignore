@@ -11,6 +11,7 @@ venv/
 backend/env/
 # Ignore node modules (for the frontend)
 frontend/node_modules/
+frontend/package-lock.json
 
 # Ignore Docker-specific files
 docker-compose.override.yml
