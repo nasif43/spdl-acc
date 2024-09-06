@@ -37,6 +37,22 @@ def read_daily_billing(
         raise HTTPException(status_code=404, detail="Daily billing not found")
     return db_daily_billing
 
+@router.put("/{billing_id}", response_model=schemas.DailyBilling)
+def update_daily_billing(
+    billing_id: int, 
+    daily_billing: schemas.DailyBillingUpdate, 
+    db: Session = Depends(get_db), 
+    current_user: User = Depends(get_current_active_user)
+):
+    if not is_authorized(current_user, ["accountant", "admin"]):
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to update daily billings")
+    
+    billing_record = crud.get_daily_billing_by_id(db=db, billing_id=billing_id)
+    if not billing_record:
+        raise HTTPException(status_code=404, detail="Billing record not found")
+    
+    return crud.update_daily_billing(db=db, billing_id=billing_id, daily_billing=daily_billing)
+
 @router.put("/{billing_id}/approve", response_model=schemas.DailyBilling)
 def approve_daily_billing(
     billing_id: int, 
@@ -44,7 +60,7 @@ def approve_daily_billing(
     db: Session = Depends(get_db), 
     current_user: User = Depends(get_current_active_user)
 ):
-    if not is_authorized(current_user, ["accountant"]):
+    if not is_authorized(current_user, ["accountant", "admin"]):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to approve daily billings")
     
     billing_record = crud.get_daily_billing_by_id(db=db, billing_id=billing_id)
