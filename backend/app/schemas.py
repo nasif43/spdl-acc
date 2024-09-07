@@ -106,7 +106,7 @@ class ProjectUpdate(BaseModel):
 
 class UnitUpdate(BaseModel):
     unit_name: Optional[str] = None
-    date: Optional[date] = None
+    date: date
     client_name: Optional[str] = None
     client_number: Optional[str] = None
     client_nid: Optional[str] = None
@@ -119,7 +119,7 @@ class UnitUpdate(BaseModel):
 
 class PaymentUpdate(BaseModel):
     amount: Optional[float] = None
-    date: Optional[date] = None
+    date: date
     description: Optional[str] = None
     cash_bank: Optional[str] = None
     remarks: Optional[str] = None
@@ -128,7 +128,7 @@ class PaymentUpdate(BaseModel):
         from_attributes = True
 
 class DailyBillingUpdate(BaseModel):
-    date: Optional[date] = None
+    date: date
     description: Optional[str] = None
     labours: Optional[int] = None
     due: Optional[float] = None

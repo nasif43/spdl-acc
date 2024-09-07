@@ -14,7 +14,7 @@ function DailyBillsCard({ project_id }) {
   const [labours, setLabours] = useState(0);
   const [due, setDue] = useState(0);
   const [paid, setPaid] = useState(0);
-  const [note, setNote] = useState('');
+  const [notes, setNotes] = useState('');
   // Date filter states
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
@@ -71,9 +71,9 @@ function DailyBillsCard({ project_id }) {
       labours: parseInt(labours),
       due: parseFloat(due),
       paid: parseFloat(paid),
-      note
+      notes
     };
-
+    console.log('Bill data:', billData);
     const token = localStorage.getItem('token');
     if (!token) {
       setError('No token found. Please log in again.');
@@ -106,6 +106,7 @@ function DailyBillsCard({ project_id }) {
         resetForm();
       })
       .catch(err => {
+        console.log(billData);
         console.error('Error adding or updating bill:', err);
         setError('Failed to add or update bill. Please try again.');
       });
@@ -140,26 +141,24 @@ function DailyBillsCard({ project_id }) {
 
   const handleEditBill = (bill) => {
     setEditId(bill.id);
-    setUpFrontCost(bill.unfront_cost);
     setDate(bill.date);
     setDescription(bill.description);
     setLabours(bill.labours);
     setDue(bill.due);
     setPaid(bill.paid);
-    setNote(bill.note);
+    setNotes(bill.notes);
     setShowForm(true);
     setShowTable(false);
   };
 
   const resetForm = () => {
     setEditId(null);
-    setUpFrontCost(false);
     setDate('');
     setDescription('');
     setLabours(0);
     setDue(0);
     setPaid(0);
-    setNote('');
+    setNotes('');
     setShowForm(false);
     setShowTable(true);
     setError('');
@@ -187,13 +186,12 @@ function DailyBillsCard({ project_id }) {
           <table>
             <thead>
               <tr>
-                <th>Project ID</th>
                 <th>Date</th>
                 <th>Description (বিবরণ)</th>
                 <th>Labours (শ্রমিক সংখ্যা)</th>
                 <th>Bill</th>
                 <th>Paid</th>
-                <th>Note</th>
+                <th>Notes</th>
                 <th>Actions</th> {/* Add an actions column */}
               </tr>
             </thead>
@@ -205,13 +203,12 @@ function DailyBillsCard({ project_id }) {
               ) : (
                 bills.map(bill => (
                   <tr key={bill.id}>
-                    <td>{bill.project_id}</td>
                     <td>{bill.date}</td>
                     <td>{bill.description}</td>
                     <td>{bill.labours}</td>
                     <td>{bill.due}</td>
                     <td>{bill.paid}</td>
-                    <td>{bill.note}</td>
+                    <td>{bill.notes}</td>
                     <td>
                       <button onClick={() => handleEditBill(bill)}>Edit</button>
                       <button onClick={() => handleDeleteBill(bill.id)}>Delete</button>
@@ -291,8 +288,8 @@ function DailyBillsCard({ project_id }) {
               <input type="number" value={paid} onChange={(e) => setPaid(e.target.value)} required />
             </label>
             <label>
-              Note:
-              <textarea value={note} onChange={(e) => setNote(e.target.value)} />
+              Notes:
+              <textarea value={notes} onChange={(e) => setNotes(e.target.value)} />
             </label>
             <button type="submit">Save</button>
             <button type="button" onClick={resetForm}>Cancel</button>
