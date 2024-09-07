@@ -15,6 +15,10 @@ const PaymentHistory = ({ project_id, unitId }) => {
     const [error, setError] = useState('');
     const [showForm, setShowForm] = useState(false);
 
+    // State for date filter
+    const [startDate, setStartDate] = useState('');
+    const [endDate, setEndDate] = useState('');
+
     useEffect(() => {
         if (!unitId) {
             console.error('Unit ID is undefined');
@@ -98,6 +102,15 @@ const PaymentHistory = ({ project_id, unitId }) => {
             });
     };
 
+    // Filter payments by date range
+    const filteredPayments = payments.filter(payment => {
+        const paymentDate = new Date(payment.date);
+        const start = startDate ? new Date(startDate) : null;
+        const end = endDate ? new Date(endDate) : null;
+
+        return (!start || paymentDate >= start) && (!end || paymentDate <= end);
+    });
+
     if (loading) {
         return <div>Loading...</div>;
     }
@@ -107,6 +120,26 @@ const PaymentHistory = ({ project_id, unitId }) => {
             <h1>Payment History for Project {project_id}</h1>
             
             {error && <div className="error">{error}</div>}
+
+            {/* Date Filter Inputs */}
+            <div>
+                <label>
+                    Start Date:
+                    <input
+                        type="date"
+                        value={startDate}
+                        onChange={(e) => setStartDate(e.target.value)}
+                    />
+                </label>
+                <label>
+                    End Date:
+                    <input
+                        type="date"
+                        value={endDate}
+                        onChange={(e) => setEndDate(e.target.value)}
+                    />
+                </label>
+            </div>
 
             <table>
                 <thead>
@@ -119,18 +152,17 @@ const PaymentHistory = ({ project_id, unitId }) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {payments.length === 0 ? (
+                    {filteredPayments.length === 0 ? (
                         <tr>
-                            <td colSpan="7">No payment history available for this unit.</td>
+                            <td colSpan="5">No payment history available for the selected date range.</td>
                         </tr>
                     ) : (
-                        payments.map(payment => (
+                        filteredPayments.map(payment => (
                             <tr key={payment.id}>
                                 <td>{payment.date}</td>
                                 <td>{payment.description}</td>
                                 <td>{payment.cash_bank}</td>
                                 <td>{payment.amount}</td>
-                                <td>{payment.remarks}</td>
                                 <td>
                                     <button onClick={() => handleDeletePayment(payment.id)}>Delete</button>
                                 </td>

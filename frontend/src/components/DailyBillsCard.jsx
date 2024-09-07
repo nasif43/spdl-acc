@@ -15,6 +15,10 @@ function DailyBillsCard({ project_id }) {
   const [due, setDue] = useState(0);
   const [paid, setPaid] = useState(0);
   const [note, setNote] = useState('');
+  // Date filter states
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+
   const [editId, setEditId] = useState(null); // For editing
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -23,6 +27,8 @@ function DailyBillsCard({ project_id }) {
   const fetchBills = () => {
     setLoading(true);
     const token = localStorage.getItem('token');
+  
+    // Fetch all bills without filtering by date on the server side
     fetch(`${API_URI}/daily_billings/${project_id}`, {
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -35,7 +41,15 @@ function DailyBillsCard({ project_id }) {
         return response.json();
       })
       .then(data => {
-        setBills(data);
+        // Apply client-side filtering based on date range
+        const filteredData = data.filter(bill => {
+          const billDate = new Date(bill.date);
+          const isAfterStartDate = startDate ? billDate >= new Date(startDate) : true;
+          const isBeforeEndDate = endDate ? billDate <= new Date(endDate) : true;
+          return isAfterStartDate && isBeforeEndDate;
+        });
+        
+        setBills(filteredData); // Set the filtered bills
         setLoading(false);
         setShowTable(true);
         setShowForm(false);
@@ -152,83 +166,94 @@ function DailyBillsCard({ project_id }) {
   };
 
   return (
-    <div className="daily-bills-card">
-      <button onClick={() => { setShowForm(false); setShowTable(true); fetchBills(); }}>View Bills</button>
-      <button onClick={() => { resetForm(); setShowForm(true); setShowTable(false); }}>Add Bill</button>
+    <div>
+      <label>
+        Start Date:
+        <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
+      </label>
+      <label>
+        End Date:
+        <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
+      </label>
+      <button onClick={fetchBills}>Filter Bills</button>
+      <div>
+        <button style={{ marginRight: '5px' }} onClick={() => { setShowForm(false); setShowTable(true); fetchBills(); }}>View Bills</button>
+        <button style={{ marginLeft: '5px' }} onClick={() => { resetForm(); setShowForm(true); setShowTable(false); }}>Add Bill</button>
 
-      {error && <div className="error">{error}</div>}
-      {loading && <div>Loading...</div>}
+        {error && <div className="error">{error}</div>}
+        {loading && <div>Loading...</div>}
 
-      {showTable && !loading && (
-        <table>
-          <thead>
-            <tr>
-              <th>Project ID</th>
-              <th>Date</th>
-              <th>Description (বিবরণ)</th>
-              <th>Labours (শ্রমিক সংখ্যা)</th>
-              <th>Bill</th>
-              <th>Paid</th>
-              <th>Note</th>
-              <th>Actions</th> {/* Add an actions column */}
-            </tr>
-          </thead>
-          <tbody>
-            {bills.length === 0 ? (
+        {showTable && !loading && (
+          <table>
+            <thead>
               <tr>
-                <td colSpan="8">No bills available for this project.</td>
+                <th>Project ID</th>
+                <th>Date</th>
+                <th>Description (বিবরণ)</th>
+                <th>Labours (শ্রমিক সংখ্যা)</th>
+                <th>Bill</th>
+                <th>Paid</th>
+                <th>Note</th>
+                <th>Actions</th> {/* Add an actions column */}
               </tr>
-            ) : (
-              bills.map(bill => (
-                <tr key={bill.id}>
-                  <td>{bill.project_id}</td>
-                  <td>{bill.date}</td>
-                  <td>{bill.description}</td>
-                  <td>{bill.labours}</td>
-                  <td>{bill.due}</td>
-                  <td>{bill.paid}</td>
-                  <td>{bill.note}</td>
-                  <td>
-                    {/* <button onClick={() => handleEditBill(bill)}>Edit</button> */}
-                    <button onClick={() => handleDeleteBill(bill.id)}>Delete</button>
-                  </td>
+            </thead>
+            <tbody>
+              {bills.length === 0 ? (
+                <tr>
+                  <td colSpan="8">No bills available for this project.</td>
                 </tr>
-              ))
-            )}
-          </tbody>
-        </table>
-      )}
+              ) : (
+                bills.map(bill => (
+                  <tr key={bill.id}>
+                    <td>{bill.project_id}</td>
+                    <td>{bill.date}</td>
+                    <td>{bill.description}</td>
+                    <td>{bill.labours}</td>
+                    <td>{bill.due}</td>
+                    <td>{bill.paid}</td>
+                    <td>{bill.note}</td>
+                    <td>
+                      <button onClick={() => handleEditBill(bill)}>Edit</button>
+                      <button onClick={() => handleDeleteBill(bill.id)}>Delete</button>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        )}
 
-      {showForm && (
-        <form onSubmit={handleAddOrUpdateBill}>
-          <label>
-            Date:
-            <input type="date" value={date} onChange={(e) => setDate(e.target.value)} required />
-          </label>
-          <label>
-            Description (বিবরণ):
-            <input type="text" value={description} onChange={(e) => setDescription(e.target.value)} required />
-          </label>
-          <label>
-            Labours (শ্রমিক সংখ্যা):
-            <input type="number" value={labours} onChange={(e) => setLabours(e.target.value)} />
-          </label>
-          <label>
-            Bill Amount:
-            <input type="number" value={due} onChange={(e) => setDue(e.target.value)} required />
-          </label>
-          <label>
-            Paid:
-            <input type="number" value={paid} onChange={(e) => setPaid(e.target.value)} required />
-          </label>
-          <label>
-            Note:
-            <textarea value={note} onChange={(e) => setNote(e.target.value)} />
-          </label>
-          <button type="submit">{editId ? 'Update Bill' : 'Submit Bill'}</button>
-          <button type="button" onClick={resetForm}>Cancel</button>
-        </form>
-      )}
+        {showForm && (
+          <form onSubmit={handleAddOrUpdateBill}>
+            <label>
+              Date:
+              <input type="date" value={date} onChange={(e) => setDate(e.target.value)} required />
+            </label>
+            <label>
+              Description (বিবরণ):
+              <input type="text" value={description} onChange={(e) => setDescription(e.target.value)} required />
+            </label>
+            <label>
+              Labours (শ্রমিক সংখ্যা):
+              <input type="number" value={labours} onChange={(e) => setLabours(e.target.value)} />
+            </label>
+            <label>
+              Bill Amount:
+              <input type="number" value={due} onChange={(e) => setDue(e.target.value)} required />
+            </label>
+            <label>
+              Paid:
+              <input type="number" value={paid} onChange={(e) => setPaid(e.target.value)} required />
+            </label>
+            <label>
+              Note:
+              <textarea value={note} onChange={(e) => setNote(e.target.value)} />
+            </label>
+            <button type="submit">Save</button>
+            <button type="button" onClick={resetForm}>Cancel</button>
+          </form>
+        )}
+      </div>
     </div>
   );
 }
