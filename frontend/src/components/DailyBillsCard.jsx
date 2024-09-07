@@ -230,9 +230,33 @@ function DailyBillsCard({ project_id }) {
               <input type="date" value={date} onChange={(e) => setDate(e.target.value)} required />
             </label>
             <label>
-              Description (বিবরণ):
-              <input type="text" value={description} onChange={(e) => setDescription(e.target.value)} required />
-            </label>
+            Description (বিবরণ):
+            <select value={description} onChange={(e) => setDescription(e.target.value)} required>
+              <option value="" disabled>আইটেম বাছাই করুন</option>
+              <option value="Signing Money">সাইনিং মানি (Signing Money)</option>
+              <option value="Deed">দলিল (Deed)</option>
+              <option value="Architect">আর্কিটেক্ট (Architect)</option>
+              <option value="Plan Pass/Approval">প্ল্যান পাশ/অনুমোদন (Plan Pass/Approval)</option>
+              <option value="Miscellaneous">বিবিধ (Miscellaneous)</option>
+              <option value="Sign Board">সাইন বোর্ড (Sign Board)</option>
+              <option value="Utility">ইউটিলিটি (Utility)</option>
+              <option value="Guard Salary">গার্ডের বেতন (Guard Salary)</option>
+              <option value="Sanitary Expense">পানিসম্পদ খরচ (Sanitary Expense)</option>
+              <option value="Piling Expense">পাইলিং খরচ (Piling Expense)</option>
+              <option value="Steel Rod Purchase">রড কেনা (Steel Rod Purchase)</option>
+              <option value="Cement">সিমেন্ট (Cement)</option>
+              <option value="Sand">বালি (Sand)</option>
+              <option value="Stone">পাথর (Stone)</option>
+              <option value="Electrician">ইলেকট্রিশিয়ান (Electrician)</option>
+              <option value="Electric Items Purchase">বৈদ্যুতিক সরঞ্জাম কেনা (Electric Items Purchase)</option>
+              <option value="Mati Kata">মাটি কাটা (Mati Kata)</option>
+              <option value="Rod Mistri">রড মিস্ত্রি (Rod Mistri)</option>
+              <option value="Am Kat">আম গাছ কাটা (Am Kat)</option>
+              <option value="Concrete-Casting">ঢালাই (Concrete Casting)</option>
+              <option value="Purchased Bamboo">বাঁশ কেনা (Purchased Bamboo)</option>
+            </select>
+          </label>
+
             <label>
               Labours (শ্রমিক সংখ্যা):
               <input type="number" value={labours} onChange={(e) => setLabours(e.target.value)} />
