@@ -1,7 +1,7 @@
 import { h } from 'preact';
 import { useState } from 'preact/hooks';
 
-const API_URI = process.env.REACT_APP_API_URL || 'http://localhost:4000';
+const API_URI = process.env.REACT_APP_API_URL || 'http://103.191.241.13:4000';
 function ProjectCreateForm() {
     const [formData, setFormData] = useState({
         name: '',
