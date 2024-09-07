@@ -247,6 +247,8 @@ function DailyBillsCard({ project_id }) {
               <option value="Electrician">ইলেকট্রিশিয়ান (Electrician)</option>
               <option value="Electric Items Purchase">বৈদ্যুতিক সরঞ্জাম কেনা (Electric Items Purchase)</option>
               <option value="Mati Kata">মাটি কাটা (Mati Kata)</option>
+              <option value="Raj Mistri Head">রাজ মিস্ত্রি হেড (Raj Mistri Head)</option>
+              <option value="Raj Mistri Helper">রাজ মিস্ত্রি সহকারী (Raj Mistri Helper)</option>
               <option value="Rod Mistri Head">রড মিস্ত্রি হেড(Rod Mistri Head)</option>
               <option value="Rod Mistri Helper">রড মিস্ত্রি সহকারী (Rod Mistri Helper)</option>
               <option value="Am Kat">আম গাছ কাটা (Am Kat)</option>
