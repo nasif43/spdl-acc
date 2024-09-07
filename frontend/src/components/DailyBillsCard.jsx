@@ -250,10 +250,31 @@ function DailyBillsCard({ project_id }) {
               <option value="Electrician">ইলেকট্রিশিয়ান (Electrician)</option>
               <option value="Electric Items Purchase">বৈদ্যুতিক সরঞ্জাম কেনা (Electric Items Purchase)</option>
               <option value="Mati Kata">মাটি কাটা (Mati Kata)</option>
-              <option value="Rod Mistri">রড মিস্ত্রি (Rod Mistri)</option>
+              <option value="Rod Mistri Head">রড মিস্ত্রি হেড(Rod Mistri Head)</option>
+              <option value="Rod Mistri Helper">রড মিস্ত্রি সহকারী (Rod Mistri Helper)</option>
               <option value="Am Kat">আম গাছ কাটা (Am Kat)</option>
               <option value="Concrete-Casting">ঢালাই (Concrete Casting)</option>
               <option value="Purchased Bamboo">বাঁশ কেনা (Purchased Bamboo)</option>
+              <option value="Hardware Materials">হার্ডওয়্যার মালামাল (Hardware Materials)</option>
+              <option value="Bricks Purchase">ইট ক্রয় (Bricks Purchase)</option>
+              <option value="Tiles Purchase">টাইলস ক্রয় (Tiles Purchase)</option>
+              <option value="Tiles Assembler Head">টাইলস মিস্ত্রি হেড(Tiles Assembler Head)</option>
+              <option value="Tiles Assembler Helper">টাইলস মিস্ত্রি সহকারী (Tiles Assembler Helper)</option>
+              <option value="Chipping Head">চিপিং মিস্ত্রি হেড (Chipping Head)</option>
+              <option value="Chipping Helper">চিপিং মিস্ত্রি সহকারী (Chipping Helper)</option>
+              <option value="Paint Purchase">রং ক্রয় (Paint Purchase)</option>
+              <option value="Day Labour Bill">দিনমজুর বিল (Day Labour Bill)</option>
+              <option value="Door Frame Purchase">চৌকাঠ ক্রয় (Door Frame Purchase)</option>
+              <option value="Door Purchase">দরজা ক্রয় (Door Purchase)</option>
+              <option value="Thai Glass Purchase">থাই গ্লাস ক্রয় (Thai Glass Purchase)</option>
+              <option value="Guard Salary">গার্ড বেতন (Guard Salary)</option>
+              <option value="Engineer Salary">ইঞ্জিনিয়ার বেতন (Engineer Salary)</option>
+              <option value="Maid Salary">বুয়া বেতন (Maid Salary)</option>
+              <option value="Head Painter">রং মিস্ত্রি হেড (Head Painter)</option>
+              <option value="Painter's Helper">রং মিস্ত্রি সহকারী (Painter's Helper)</option>
+              <option value="Head Welder">গ্রিল মিস্ত্রি হেড (Head Welder)</option>
+              <option value="Welder's Helper">গ্রিল মিস্ত্রি সহকারী (Welder's Helper)</option>
+              <option value="Lift + Generator / Substation">লিফট + জেনারেটর / সাবস্টেশন (Lift + Generator / Substation)</option>
             </select>
           </label>
 
