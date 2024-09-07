@@ -66,27 +66,16 @@ class DailyBillingBase(BaseModel):
     paid: Optional[float] = Field(default=None, ge=0)  # Optional, default None
     notes: Optional[str] = None
     user_id: Optional[int] = None  # Optional, defaults to None
-    upfront_cost: bool = False
+    upfront_cost: Optional[bool] = None  # Optional, default None
 
-
-class DailyBillingCreate(BaseModel):
-    project_id: int
-    date: date
-    description: Optional[str] = None
-    due: float = Field(..., ge=0)  # Ensure due is non-negative
-    paid: Optional[float] = Field(default=None, ge=0)  # Optional, default None
-    user_id: Optional[int] = None  # Optional, defaults to None
-    upfront_cost: bool = False
-    labours: Optional[int] = None
-    notes: Optional[str] = None
-
+class DailyBillingCreate(DailyBillingBase):
+    pass
 
 class DailyBilling(DailyBillingBase):
     id: int
-    # Ensure the response model doesn't conflict with the Pydantic field definitions
+
     class Config:
         from_attributes = True
-
 
 class Token(BaseModel):
     access_token: str
