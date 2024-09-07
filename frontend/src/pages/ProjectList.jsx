@@ -4,7 +4,7 @@ import ProjectCard from '../components/ProjectCard';
 import ProjectCreateForm from '../components/ProjectCreateForm';
 import '../styles/ProjectList.css';
 
-const API_URI = process.env.REACT_APP_API_URL || 'http://localhost:4000';
+const API_URI = process.env.REACT_APP_API_URL || 'http://103.191.241.13:4000';
 function ProjectList() {
   const router = useRouter();
   const [projects, setProjects] = useState([]);

@@ -2,7 +2,7 @@ import { h } from 'preact';
 import { useEffect, useState } from 'preact/hooks';
 import '../styles/Table.css';
 
-const API_URI = process.env.REACT_APP_API_URL || 'http://localhost:4000';
+const API_URI = process.env.REACT_APP_API_URL || 'http://103.191.241.13:4000';
 
 const PaymentHistory = ({ project_id, unitId }) => {
     const [payments, setPayments] = useState([]);
