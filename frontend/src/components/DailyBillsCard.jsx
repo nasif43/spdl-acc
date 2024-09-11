@@ -65,8 +65,8 @@ function DailyBillsCard({ project_id }) {
   const handleAddOrUpdateBill = (e) => {
     e.preventDefault();
     const billData = {
-      project_id: project_id,
-      unfront_cost: upFrontCost,
+      project_id: parseInt(project_id),
+      upfront_cost: upFrontCost,
       date,
       description,
       labour: parseInt(labour),
