@@ -87,6 +87,8 @@ def create_daily_billing(db: Session, daily_billing: schemas.DailyBillingCreate)
         project_id=daily_billing.project_id,
         date=daily_billing.date,
         description=daily_billing.description,
+        note = daily_billing.note,
+        labour=daily_billing.labour,
         due=daily_billing.due,
         paid=daily_billing.paid,
         user_id=daily_billing.user_id,
