@@ -64,7 +64,7 @@ class DailyBillingBase(BaseModel):
     labours: Optional[int] = None
     due: float = Field(..., ge=0)  # Ensure due is non-negative
     paid: Optional[float] = Field(default=None, ge=0)  # Optional, default None
-    notes: Optional[str] = None
+    note: Optional[str] = None
     user_id: Optional[int] = None  # Optional, defaults to None
     upfront_cost: Optional[bool] = None  # Optional, default None
 
@@ -133,7 +133,7 @@ class DailyBillingUpdate(BaseModel):
     labours: Optional[int] = None
     due: Optional[float] = None
     paid: Optional[float] = None
-    notes: Optional[str] = None
+    note: Optional[str] = None
     user_id: Optional[int] = None
     upfront_cost: Optional[bool] = None
 

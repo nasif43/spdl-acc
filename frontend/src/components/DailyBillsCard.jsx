@@ -11,10 +11,11 @@ function DailyBillsCard({ project_id }) {
   const [upFrontCost, setUpFrontCost] = useState(false);
   const [date, setDate] = useState('');
   const [description, setDescription] = useState('');
-  const [labours, setLabours] = useState(0);
+  const [labour, setLabour] = useState(0);
   const [due, setDue] = useState(0);
   const [paid, setPaid] = useState(0);
-  const [notes, setNotes] = useState('');
+  const [note, setNote] = useState('');
+  const [user_id, setUserId] = useState(0);
   // Date filter states
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
@@ -27,7 +28,7 @@ function DailyBillsCard({ project_id }) {
   const fetchBills = () => {
     setLoading(true);
     const token = localStorage.getItem('token');
-  
+    ;
     // Fetch all bills without filtering by date on the server side
     fetch(`${API_URI}/daily_billings/${project_id}`, {
       headers: {
@@ -68,10 +69,10 @@ function DailyBillsCard({ project_id }) {
       unfront_cost: upFrontCost,
       date,
       description,
-      labours: parseInt(labours),
+      labour: parseInt(labour),
       due: parseFloat(due),
       paid: parseFloat(paid),
-      notes
+      note
     };
     console.log('Bill data:', billData);
     const token = localStorage.getItem('token');
@@ -143,10 +144,10 @@ function DailyBillsCard({ project_id }) {
     setEditId(bill.id);
     setDate(bill.date);
     setDescription(bill.description);
-    setLabours(bill.labours);
+    setLabour(bill.labour);
     setDue(bill.due);
     setPaid(bill.paid);
-    setNotes(bill.notes);
+    setNote(bill.note);
     setShowForm(true);
     setShowTable(false);
   };
@@ -155,10 +156,10 @@ function DailyBillsCard({ project_id }) {
     setEditId(null);
     setDate('');
     setDescription('');
-    setLabours(0);
+    setLabour(0);
     setDue(0);
     setPaid(0);
-    setNotes('');
+    setNote('');
     setShowForm(false);
     setShowTable(true);
     setError('');
@@ -188,10 +189,10 @@ function DailyBillsCard({ project_id }) {
               <tr>
                 <th>Date</th>
                 <th>Description (বিবরণ)</th>
-                <th>Labours (শ্রমিক সংখ্যা)</th>
+                <th>No. of Labours(শ্রমিক সংখ্যা)</th>
                 <th>Bill</th>
                 <th>Paid</th>
-                <th>Notes</th>
+                <th>Note</th>
                 <th>Actions</th> {/* Add an actions column */}
               </tr>
             </thead>
@@ -205,10 +206,10 @@ function DailyBillsCard({ project_id }) {
                   <tr key={bill.id}>
                     <td>{bill.date}</td>
                     <td>{bill.description}</td>
-                    <td>{bill.labours}</td>
+                    <td>{bill.labour}</td>
                     <td>{bill.due}</td>
                     <td>{bill.paid}</td>
-                    <td>{bill.notes}</td>
+                    <td>{bill.note}</td>
                     <td>
                       <button onClick={() => handleEditBill(bill)}>Edit</button>
                       <button onClick={() => handleDeleteBill(bill.id)}>Delete</button>
@@ -278,8 +279,8 @@ function DailyBillsCard({ project_id }) {
           </label>
 
             <label>
-              Labours (শ্রমিক সংখ্যা):
-              <input type="number" value={labours} onChange={(e) => setLabours(e.target.value)} />
+              Labour (শ্রমিক সংখ্যা):
+              <input type="number" value={labour} onChange={(e) => setLabour(e.target.value)} />
             </label>
             <label>
               Bill Amount:
@@ -290,8 +291,8 @@ function DailyBillsCard({ project_id }) {
               <input type="number" value={paid} onChange={(e) => setPaid(e.target.value)} required />
             </label>
             <label>
-              Notes:
-              <textarea value={notes} onChange={(e) => setNotes(e.target.value)} />
+              Note:
+              <textarea value={note} onChange={(e) => setNote(e.target.value)} />
             </label>
             <button type="submit">Save</button>
             <button type="button" onClick={resetForm}>Cancel</button>

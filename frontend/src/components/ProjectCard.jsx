@@ -3,7 +3,7 @@ import { useState } from 'preact/hooks';
 import { Link } from 'preact-router';
 import '../styles/ProjectCard.css'; // Add your styles here
 
-const API_URI = process.env.REACT_APP_API_URL || 'http://103.191.241.13:4000';
+const API_URI = 'http://103.191.241.13:4000';
 
 function ProjectCard({ project, onDelete }) {
   const [isEditing, setIsEditing] = useState(false);

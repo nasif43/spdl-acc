@@ -1,7 +1,7 @@
 import { h } from 'preact';
 import { useState } from 'preact/hooks';
 import '../styles/LoginForm.css';
-const API_URI = process.env.REACT_APP_API_URL || 'http://103.191.241.13:4000';
+const API_URI = 'http://103.191.241.13:4000';
 const LoginForm = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');

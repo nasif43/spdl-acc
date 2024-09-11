@@ -59,14 +59,13 @@ class DailyBilling(Base):
     due = Column(Float, nullable=False)
     paid = Column(Float, nullable=True)  # Make sure this is nullable if optional
     note = Column(String, nullable=True)
-    site_engineer = Column(Boolean, default=False)
     project_id = Column(Integer, ForeignKey('projects.id'), nullable=False)
     user_id = Column(Integer, ForeignKey('users.id'), nullable=True)  # Make this nullable
     upfront_cost = Column(Boolean, default=False)
 
     # Define relationship to User
-    site_engineer = relationship("User", back_populates="daily_billings")
     project = relationship('Project', back_populates='daily_billings')
+    user_id = relationship('User', back_populates='daily_billings')
 
 class User(Base):
     __tablename__ = 'users'
@@ -76,5 +75,5 @@ class User(Base):
     usertype = Column(String, nullable=False)
 
     # Relationship back to daily billings
-    daily_billings = relationship("DailyBilling", back_populates="site_engineer")
+    daily_billings = relationship("DailyBilling", back_populates="user_id")
 
