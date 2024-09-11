@@ -61,7 +61,7 @@ class DailyBillingBase(BaseModel):
     project_id: int
     date: date
     description: Optional[str] = None
-    labours: Optional[int] = None
+    labour: Optional[int] = None
     due: float = Field(..., ge=0)  # Ensure due is non-negative
     paid: Optional[float] = Field(default=None, ge=0)  # Optional, default None
     note: Optional[str] = None
@@ -130,7 +130,7 @@ class PaymentUpdate(BaseModel):
 class DailyBillingUpdate(BaseModel):
     date: date
     description: Optional[str] = None
-    labours: Optional[int] = None
+    labour: Optional[int] = None
     due: Optional[float] = None
     paid: Optional[float] = None
     note: Optional[str] = None
