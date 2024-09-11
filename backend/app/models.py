@@ -60,12 +60,12 @@ class DailyBilling(Base):
     paid = Column(Float, nullable=True)  # Make sure this is nullable if optional
     note = Column(String, nullable=True)
     project_id = Column(Integer, ForeignKey('projects.id'), nullable=False)
-    user_id = Column(Integer, ForeignKey('users.id'), nullable=True)  # Make this nullable
+    user_id = Column(Integer, ForeignKey('users.id'), nullable=True)  # ForeignKey linking to User
     upfront_cost = Column(Boolean, default=False)
 
-    # Define relationship to User
+    # Define relationship to Project and User
     project = relationship('Project', back_populates='daily_billings')
-    user_id = relationship('User', back_populates='daily_billings')
+    user = relationship('User', back_populates='daily_billings')  # Fix this relationship
 
 class User(Base):
     __tablename__ = 'users'
@@ -75,5 +75,5 @@ class User(Base):
     usertype = Column(String, nullable=False)
 
     # Relationship back to daily billings
-    daily_billings = relationship("DailyBilling", back_populates="user_id")
+    daily_billings = relationship("DailyBilling", back_populates="user")  # Linking to 'user', not 'user_id'
 
