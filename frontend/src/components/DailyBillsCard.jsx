@@ -166,7 +166,7 @@ function DailyBillsCard({ project_id }) {
   };
 
   return (
-    <div>
+    <div style={{ padding: '10px' }}>
       <label>
         Start Date:
         <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
@@ -211,7 +211,7 @@ function DailyBillsCard({ project_id }) {
                     <td>{bill.paid}</td>
                     <td>{bill.note}</td>
                     <td>
-                      <button onClick={() => handleEditBill(bill)}>Edit</button>
+                      <button onClick={() => handleEditBill(bill)}>Edit </button>
                       <button onClick={() => handleDeleteBill(bill.id)}>Delete</button>
                     </td>
                   </tr>

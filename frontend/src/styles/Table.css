@@ -1,5 +1,3 @@
-/* Table.css */
-
 /* General styles */
 body {
     font-family: 'Arial', sans-serif;
@@ -11,6 +9,7 @@ body {
 .table-container {
     max-width: 1200px;
     margin: auto;
+    overflow-x: auto; /* Enable horizontal scrolling */
 }
 
 /* Style for the filter form */
@@ -65,21 +64,17 @@ table {
     margin: 20px 0;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
-    overflow: hidden;
-    table-layout: fixed;
-    transition: transform 0.3s ease;
-}
-
-table:hover {
-    transform: scale(1.02);
+    table-layout: auto; /* Prevent fixed columns from squeezing content */
 }
 
 th, td {
     padding: 12px;
     text-align: left;
-    border-bottom: 1px solid #ddd;
+    border: 1px solid #ccc; /* Add border to each cell */
     word-wrap: break-word;
-    transition: background-color 0.3s ease;
+    white-space: normal; /* Enable wrapping */
+    max-width: 250px; /* Set max width to limit wrapping */
+    overflow: hidden;
 }
 
 th {
@@ -89,12 +84,38 @@ th {
     letter-spacing: 0.1em;
 }
 
-tr {
-    transition: background-color 0.3s ease;
-}
-
 tr:hover {
     background-color: rgba(0, 128, 255, 0.1);
+}
+/* Add zebra striping for table rows */
+tr:nth-child(even) {
+    background-color: #f2f2f2; /* Light grey color for even rows */
+}
+
+tr:nth-child(odd) {
+    background-color: #fff; /* White color for odd rows */
+}
+
+/* Table footer styles */
+tfoot td {
+    font-weight: bold;
+}
+
+/* Responsive styling */
+@media (max-width: 600px) {
+    .table-container {
+        overflow-x: auto; /* Keep the table scrollable on small devices */
+    }
+
+    table {
+        width: 100%;
+        min-width: 600px; /* Ensure table doesn't shrink too much */
+    }
+
+    th, td {
+        white-space: normal; /* Ensure wrapping */
+        max-width: 150px; /* Adjust max width for smaller screens */
+    }
 }
 
 /* Form styles */
@@ -161,55 +182,7 @@ button:hover {
     transform: translateY(-2px);
 }
 
-/* Responsive styles */
-@media (max-width: 600px) {
-    table {
-        display: block;
-        overflow-x: auto;
-        white-space: nowrap;
-    }
-
-    th, td {
-        display: block;
-        text-align: right;
-    }
-
-    th {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        background: #080550;
-        color: white;
-        text-align: left;
-    }
-
-    td {
-        position: relative;
-        padding-left: 50%;
-        white-space: normal;
-    }
-
-    td::before {
-        content: attr(data-label);
-        position: absolute;
-        left: 0;
-        width: 50%;
-        padding-left: 10px;
-        font-weight: bold;
-        white-space: nowrap;
-    }
-
-    form {
-        display: block;
-        margin-top: 20px;
-    }
-
-    .add-more-button {
-        display: none;
-    }
-}
-
+/* Responsive styles for hiding form and showing add button on larger screens */
 @media (min-width: 601px) {
     .form-container {
         display: none;
