@@ -3,7 +3,7 @@ import { useEffect, useState } from 'preact/hooks';
 import { Link } from 'preact-router'; // Import Link for navigation
 import '../styles/Table.css';
 
-const API_URI = process.env.REACT_APP_API_URL || 'http://103.191.241.13:4000';
+const API_URI = 'http://103.191.241.13:4000';
 
 const AddUnitForm = ({ projectId, onUnitAdded }) => {
     // Form state management code remains the same

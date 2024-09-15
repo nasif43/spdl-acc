@@ -73,8 +73,9 @@ th, td {
     border: 1px solid #ccc; /* Add border to each cell */
     word-wrap: break-word;
     white-space: normal; /* Enable wrapping */
-    max-width: 250px; /* Set max width to limit wrapping */
+    max-width: 100px; /* Set max width to limit wrapping */
     overflow: hidden;
+    height: auto;
 }
 
 th {
@@ -109,12 +110,12 @@ tfoot td {
 
     table {
         width: 100%;
-        min-width: 600px; /* Ensure table doesn't shrink too much */
+        min-width: 300px; /* Ensure table doesn't shrink too much */
     }
 
     th, td {
         white-space: normal; /* Ensure wrapping */
-        max-width: 150px; /* Adjust max width for smaller screens */
+        max-width: 100px; /* Adjust max width for smaller screens */
     }
 }
 
@@ -161,7 +162,6 @@ input[type="date"]:focus {
     border-color: #080550;
     box-shadow: 0 0 5px rgba(0, 128, 255, 0.5);
 }
-
 button {
     background-color: #080550;
     color: white;
@@ -171,14 +171,16 @@ button {
     text-decoration: none;
     display: inline-block;
     font-size: 16px;
-    margin-top: 10px;
+    gap: 10px; /* Add spacing between buttons */
+    margin-top: 5px;
+    margin-right: 5px;
     cursor: pointer;
     border-radius: 4px;
     transition: background-color 0.3s, transform 0.2s;
 }
 
 button:hover {
-    background-color: #45a049;
+    background-color: #4fd3ff;
     transform: translateY(-2px);
 }
 

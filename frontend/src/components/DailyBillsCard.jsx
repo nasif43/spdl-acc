@@ -2,7 +2,7 @@ import { h } from 'preact';
 import { useState } from 'preact/hooks';
 import '../styles/Table.css'; // Assuming you have some basic styles for the table
 
-const API_URI = process.env.REACT_APP_API_URL || 'http://103.191.241.13:4000';
+const API_URI = 'http://103.191.241.13:4000';
 
 function DailyBillsCard({ project_id }) {
   const [bills, setBills] = useState([]);
@@ -189,11 +189,11 @@ function DailyBillsCard({ project_id }) {
               <tr>
                 <th>Date</th>
                 <th>Description (বিবরণ)</th>
-                <th>No. of Labours(শ্রমিক সংখ্যা)</th>
-                <th>Bill</th>
-                <th>Paid</th>
+                <th style={{maxWidth: '10px'}}>Labour No. (শ্রমিক সংখ্যা)</th>
+                <th style={{maxWidth: '10px'}}>Bill</th>
+                <th style={{maxWidth: '10px'}}>Paid</th>
                 <th>Note</th>
-                <th>Actions</th> {/* Add an actions column */}
+                <th style={{maxWidth: '60px'}}>Actions</th> {/* Add an actions column */}
               </tr>
             </thead>
             <tbody>
@@ -210,7 +210,7 @@ function DailyBillsCard({ project_id }) {
                     <td>{bill.due}</td>
                     <td>{bill.paid}</td>
                     <td>{bill.note}</td>
-                    <td>
+                    <td style={{maxWidth: '15px'}}>
                       <button onClick={() => handleEditBill(bill)}>Edit </button>
                       <button onClick={() => handleDeleteBill(bill.id)}>Delete</button>
                     </td>
