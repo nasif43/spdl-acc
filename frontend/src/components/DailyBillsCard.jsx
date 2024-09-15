@@ -187,13 +187,13 @@ function DailyBillsCard({ project_id }) {
           <table>
             <thead>
               <tr>
-                <th>Date</th>
+                <th style={{maxWidth: '10px'}}>Date</th>
                 <th>Description (বিবরণ)</th>
-                <th style={{maxWidth: '10px'}}>Labour No. (শ্রমিক সংখ্যা)</th>
+                <th style={{maxWidth: '10px'}}>QTY</th>
                 <th style={{maxWidth: '10px'}}>Bill</th>
-                <th style={{maxWidth: '10px'}}>Paid</th>
+                <th style={{maxWidth: '12px'}}>Paid</th>
                 <th>Note</th>
-                <th style={{maxWidth: '60px'}}>Actions</th> {/* Add an actions column */}
+                <th className="actions-column" style={{maxWidth: '100px'}}>Actions</th> {/* Add an actions column */}
               </tr>
             </thead>
             <tbody>
@@ -204,13 +204,13 @@ function DailyBillsCard({ project_id }) {
               ) : (
                 bills.map(bill => (
                   <tr key={bill.id}>
-                    <td>{bill.date}</td>
+                    <td>{new Date(bill.date).toLocaleDateString('en-GB')}</td>
                     <td>{bill.description}</td>
                     <td>{bill.labour}</td>
                     <td>{bill.due}</td>
                     <td>{bill.paid}</td>
                     <td>{bill.note}</td>
-                    <td style={{maxWidth: '15px'}}>
+                    <td className="actions-column" style={{maxWidth: '15px'}}>
                       <button onClick={() => handleEditBill(bill)}>Edit </button>
                       <button onClick={() => handleDeleteBill(bill.id)}>Delete</button>
                     </td>
@@ -279,7 +279,7 @@ function DailyBillsCard({ project_id }) {
           </label>
 
             <label>
-              Labour (শ্রমিক সংখ্যা):
+              Quantity (সংখ্যা):
               <input type="number" value={labour} onChange={(e) => setLabour(e.target.value)} />
             </label>
             <label>

@@ -68,12 +68,14 @@ table {
 }
 
 th, td {
-    padding: 12px;
-    text-align: left;
-    border: 1px solid #ccc; /* Add border to each cell */
+    font-weight: bold;
+    padding: 6px;
+    text-align: center;
+    border: 1px solid #000000; /* Add border to each cell */
     word-wrap: break-word;
     white-space: normal; /* Enable wrapping */
     max-width: 100px; /* Set max width to limit wrapping */
+    max-height: fit-content;
     overflow: hidden;
     height: auto;
 }
@@ -204,5 +206,15 @@ button:hover {
     .add-more-button:hover {
         background-color: #45a049;
         transform: translateY(-2px);
+    }
+}
+
+@media print {
+    button {
+      display: none;
+    }
+    
+    .actions-column {
+      display: none;
     }
 }
