@@ -65,8 +65,8 @@ function DailyBillsCard({ project_id }) {
           const isDescriptionMatch = descriptionFiler ? bill.description.toLowerCase().includes(descriptionFiler.toLowerCase()) : true;
           return isAfterStartDate && isBeforeEndDate && isDescriptionMatch;
         });
-        
-        setBills(filteredData); // Set the filtered bills
+        const sortedData = filteredData.sort((a, b) => new Date(a.date) - new Date(b.date));
+        setBills(sortedData); // Set the filtered bills
         setLoading(false);
         setShowTable(true);
         setShowForm(false);
