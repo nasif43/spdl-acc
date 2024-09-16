@@ -89,17 +89,6 @@ function ProjectCard({ project, onDelete }) {
     }
   };
 
-  // Dummy functions for inflow and outflow calculations
-  const calculateInflow = () => {
-    // Replace this with actual logic to calculate inflow
-    return "৳0";
-  };
-
-  const calculateOutflow = () => {
-    // Replace this with actual logic to calculate outflow
-    return "৳0";
-  };
-
   return (
     <div className="project-card">
       <h2>{project.name}</h2>
@@ -119,8 +108,8 @@ function ProjectCard({ project, onDelete }) {
         </>
       ) : (
         <>
-          <Link href={`/projects/${project.id}`}><button style={{ marginRight: '5px' }}>Inflow: {calculateInflow()}</button></Link>
-          <Link href={`/projects/${project.id}/outflow`}><button style={{ marginLeft: '5px' }}>Outflow: {calculateOutflow()}</button></Link>
+          <Link href={`/projects/${project.id}`}><button style={{ marginRight: '5px' }}>Inflow</button></Link>
+          <Link href={`/projects/${project.id}/outflow`}><button style={{ marginLeft: '5px' }}>Outflow</button></Link>
         </>
       )}
 

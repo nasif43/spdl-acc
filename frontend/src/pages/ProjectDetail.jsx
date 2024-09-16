@@ -131,6 +131,30 @@ const AddUnitForm = ({ projectId, onUnitAdded }) => {
     );
 };
 
+const projectName = ({ id }) => {
+    const [projectName, setProjectName] = useState('');
+    useEffect(() => {
+        if (!id) {
+            console.error('Project ID is undefined');
+            return;
+        }
+
+        fetch(`${API_URI}/projects/${id}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                setProjectName(data.name || `Project ${id}`);
+            })
+            .catch(error => {
+                console.error('Error fetching project name:', error);
+            });
+    }, [id]);
+};
+    
 const ProjectDetail = ({ id }) => {
     const [units, setUnits] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -195,7 +219,7 @@ const ProjectDetail = ({ id }) => {
 
     return (
         <div>
-            <h1>Units for Project {id}</h1>
+            <h1>Units for Project {projectName}</h1>
             <table>
                 <thead>
                     <tr>
@@ -205,9 +229,9 @@ const ProjectDetail = ({ id }) => {
                         <th>Phone Number</th>
                         <th>NID</th>
                         <th>Settled Amount</th>
-                        <th>Instalment</th>
+                        <th>Paid</th>
                         <th>Purchase Status</th>
-                        <th>Actions</th>
+                        <th className="actions-column">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -218,15 +242,15 @@ const ProjectDetail = ({ id }) => {
                     ) : (
                         units.map(unit => (
                             <tr key={unit.id}>
-                                <td>{unit.date}</td>
+                                <td>{new Date(unit.date).toLocaleDateString('en-GB')}</td>
                                 <td>{unit.unit_name}</td>
                                 <td>{unit.client_name}</td>
                                 <td>{unit.client_number}</td>
                                 <td>{unit.client_nid}</td>
                                 <td>{unit.amount}</td>
-                                <td>{unit.paid}</td>
+                                <td style={{minWidth:'10px'}}>{unit.paid}</td>
                                 <td>{unit.sold ? 'Sold' : 'Available'}</td>
-                                <td>
+                                <td className='actions-column'>
                                     <button>
                                         <Link href={`/payment_history/${id}/${unit.id}`} style={{ color: 'white' }}>
                                             View Payments
@@ -241,7 +265,7 @@ const ProjectDetail = ({ id }) => {
                     )}
                     <tr>
                         <td colSpan="9">
-                            <button className="add-more-button" onClick={handleAddUnitClick}>Add More</button>
+                            <button onClick={handleAddUnitClick}>Add More</button>
                         </td>
                     </tr>
                 </tbody>

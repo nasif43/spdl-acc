@@ -148,7 +148,7 @@ const PaymentHistory = ({ project_id, unitId }) => {
                         <th>Description (বিবরণ)</th>
                         <th>Cash/Bank</th>
                         <th>Amount</th>
-                        <th>Actions</th> {/* Added column for delete button */}
+                        <th className='actions-column'>Actions</th> {/* Added column for delete button */}
                     </tr>
                 </thead>
                 <tbody>
@@ -159,11 +159,11 @@ const PaymentHistory = ({ project_id, unitId }) => {
                     ) : (
                         filteredPayments.map(payment => (
                             <tr key={payment.id}>
-                                <td>{payment.date}</td>
+                                <td>{new Date(payment.date).toLocaleDateString('en-GB')}</td>
                                 <td>{payment.description}</td>
                                 <td>{payment.cash_bank}</td>
                                 <td>{payment.amount}</td>
-                                <td>
+                                <td className='actions-column'>
                                     <button onClick={() => handleDeletePayment(payment.id)}>Delete</button>
                                 </td>
                             </tr>
