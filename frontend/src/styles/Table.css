@@ -68,7 +68,7 @@ table {
 }
 
 th, td {
-    font-weight: bold;
+    font-weight: normal;
     padding: 6px;
     text-align: center;
     border: 1px solid #000000; /* Add border to each cell */

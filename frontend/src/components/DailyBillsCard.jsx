@@ -1,5 +1,5 @@
 import { h } from 'preact';
-import { useState } from 'preact/hooks';
+import { useState, useEffect } from 'preact/hooks';
 import '../styles/Table.css'; // Assuming you have some basic styles for the table
 import {BILL_DESCRIPTIONS} from '../constants';
 
@@ -24,6 +24,21 @@ function DailyBillsCard({ project_id }) {
   const [editId, setEditId] = useState(null); // For editing
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  // Total bill amount
+  const [totalBill, setTotalBill] = useState(0);
+  const [totalPaid, setTotalPaid] = useState(0);
+  const [totalDue, setTotalDue] = useState(0);
+
+  // Calculate total bill, paid, and due
+  useEffect(() => {
+    const totalBillAmount = bills.reduce((total, bill) => total + bill.due, 0);
+    const totalPaidAmount = bills.reduce((total, bill) => total + bill.paid, 0);
+    const totalDueAmount = totalBillAmount - totalPaidAmount;
+    setTotalBill(totalBillAmount);
+    setTotalPaid(totalPaidAmount);
+    setTotalDue(totalDueAmount);
+  }, [bills]);
+
   // Fetch bills on button click
   const fetchBills = () => {
     setLoading(true);
@@ -212,20 +227,29 @@ function DailyBillsCard({ project_id }) {
                   <td colSpan="8">No bills available for this project.</td>
                 </tr>
               ) : (
-                bills.map(bill => (
-                  <tr key={bill.id}>
-                    <td>{new Date(bill.date).toLocaleDateString('en-GB')}</td>
-                    <td>{bill.description}</td>
-                    <td>{bill.labour}</td>
-                    <td>{bill.due}</td>
-                    <td>{bill.paid}</td>
-                    <td>{bill.note}</td>
-                    <td className="actions-column" style={{maxWidth: '15px'}}>
-                      <button onClick={() => handleEditBill(bill)}>Edit </button>
-                      <button onClick={() => handleDeleteBill(bill.id)}>Delete</button>
-                    </td>
+                <>
+                  {bills.map(bill => (
+                    <tr key={bill.id}>
+                      <td>{new Date(bill.date).toLocaleDateString('en-GB')}</td>
+                      <td>{bill.description}</td>
+                      <td>{bill.labour}</td>
+                      <td>{bill.due}</td>
+                      <td>{bill.paid}</td>
+                      <td>{bill.note}</td>
+                      <td className="actions-column" style={{maxWidth: '15px'}}>
+                        <button onClick={() => handleEditBill(bill)}>Edit </button>
+                        <button onClick={() => handleDeleteBill(bill.id)}>Delete</button>
+                      </td>
+                    </tr>
+                  ))}
+                  <tr>
+                    <td colSpan={3}></td>
+                    <td style={{ fontWeight: 'bold' }}>Total Bill: {totalBill}</td>
+                    <td style={{fontWeight: 'bold'}}>Total Paid: {totalPaid}</td>
+                    <td style={{fontWeight:'bold'}}>Total Due: {totalDue}</td>
+                    <td></td>
                   </tr>
-                ))
+                </>
               )}
             </tbody>
           </table>
