@@ -30,7 +30,7 @@ body {
 }
 
 .filter-form input[type="date"] {
-    width: calc(50% - 20px);
+    width: auto;
     padding: 10px;
     margin: 5px 10px 10px 0;
     border: 1px solid #ccc;
@@ -74,7 +74,7 @@ th, td {
     border: 1px solid #000000; /* Add border to each cell */
     word-wrap: break-word;
     white-space: normal; /* Enable wrapping */
-    max-width: 100px; /* Set max width to limit wrapping */
+    /* max-width: 120px; */
     max-height: fit-content;
     overflow: hidden;
     height: auto;
@@ -150,7 +150,7 @@ input[type="text"],
 input[type="number"],
 input[type="date"],
 input[type="checkbox"] {
-    width: calc(100% - 20px);
+    width: auto;
     padding: 10px;
     margin-top: 5px;
     border: 1px solid #ccc;
@@ -185,6 +185,10 @@ button:hover {
     background-color: #4fd3ff;
     transform: translateY(-2px);
 }
+.start-and-end-dates {
+    display: flex;
+    gap: 10px;
+}
 
 /* Responsive styles for hiding form and showing add button on larger screens */
 @media (min-width: 601px) {
@@ -216,5 +220,18 @@ button:hover {
     
     .actions-column {
       display: none;
+    }
+
+    .date {
+        margin: none;
+    }
+    
+    body {
+        margin: 0;
+        padding: 0;
+    }
+    .navbar {
+        padding: 0;
+        margin: 0;
     }
 }

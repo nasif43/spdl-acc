@@ -183,7 +183,7 @@ function DailyBillsCard({ project_id }) {
 
   return (
     <div style={{ padding: '10px' }}>
-      <label>
+      <div className="start-and-end-dates"><label>
         Start Date:
         <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
       </label>
@@ -191,6 +191,7 @@ function DailyBillsCard({ project_id }) {
         End Date:
         <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
       </label>
+      </div>
       <label>
         Description:
         <select value={descriptionFiler} onChange={(e) => setDescriptionFilter(e.target.value)}>
@@ -213,18 +214,18 @@ function DailyBillsCard({ project_id }) {
             <thead>
               <tr>
                 <th style={{maxWidth: '10px'}}>Date</th>
-                <th>Description (বিবরণ)</th>
-                <th style={{maxWidth: '10px'}}>QTY</th>
-                <th style={{maxWidth: '10px'}}>Bill</th>
+                <th style={{minWidth: '55px'}}>Description</th>
+                <th style={{minWidth: '10px'}}>QTY</th>
+                <th style={{minWidth: '10px'}}>Bill</th>
                 <th style={{minWidth: '8px'}}>Paid</th>
-                <th>Note</th>
-                <th className="actions-column" style={{maxWidth: '100px'}}>Actions</th> {/* Add an actions column */}
+                <th style={{minWidth: '50px'}}>Note</th>
+                <th className="actions-column" style={{minWidth: '200px'}}>Actions</th> {/* Add an actions column */}
               </tr>
             </thead>
             <tbody>
               {bills.length === 0 ? (
                 <tr>
-                  <td colSpan="8">No bills available for this project.</td>
+                  <td colSpan="7">No bills available for this project.</td>
                 </tr>
               ) : (
                 <>
@@ -244,10 +245,9 @@ function DailyBillsCard({ project_id }) {
                   ))}
                   <tr>
                     <td colSpan={3}></td>
-                    <td style={{ fontWeight: 'bold' }}>Total Bill: {totalBill}</td>
-                    <td style={{fontWeight: 'bold'}}>Total Paid: {totalPaid}</td>
+                    <td style={{ fontWeight: 'bold' }}>{totalBill}</td>
+                    <td style={{fontWeight: 'bold'}}>{totalPaid}</td>
                     <td style={{fontWeight:'bold'}}>Total Due: {totalDue}</td>
-                    <td></td>
                   </tr>
                 </>
               )}

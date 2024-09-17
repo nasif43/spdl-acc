@@ -1,7 +1,7 @@
 /* Project List Styles */
 .project-list {
     padding: 20px;
-    background-color: #dce2ff; /* Light background */
+    background: url('../assets/bg-home.jpg');
     min-height: 100vh;
 }
 

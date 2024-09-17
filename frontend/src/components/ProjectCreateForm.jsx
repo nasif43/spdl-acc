@@ -57,11 +57,11 @@ function ProjectCreateForm() {
 
     return (
         <div className="project-create-form">
-            <h2>Create New Project</h2>
             {error && <div className="error">{error}</div>}
             {successMessage && <div className="success">{successMessage}</div>}
             <form onSubmit={handleSubmit}>
                 <div>
+                    <h2>Create New Project</h2>
                     <label htmlFor="name">Project Name:</label>
                     <input
                         type="text"
