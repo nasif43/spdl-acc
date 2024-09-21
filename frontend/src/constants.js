@@ -2,6 +2,7 @@
 
 export const BILL_DESCRIPTIONS = [
     { value: "Signing Money", label: "সাইনিং মানি (Signing Money)" },
+    { value: "Project Deposit", label: " জমা (Project Deposit)" },
     { value: "Deed", label: "দলিল (Deed)" },
     { value: "Architect", label: "আর্কিটেক্ট (Architect)" },
     { value: "Plan Pass/Approval", label: "প্ল্যান পাশ/অনুমোদন (Plan Pass/Approval)" },
