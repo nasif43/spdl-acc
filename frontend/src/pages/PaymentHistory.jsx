@@ -5,6 +5,8 @@ import '../styles/Table.css';
 const API_URI = 'http://103.191.241.13:4000';
 
 const PaymentHistory = ({ project_id, unitId }) => {
+    const [sortOrder, setSortOrder] = useState('asc'); // 'asc' for ascending, 'desc' for descending
+    const [project_name, setProjectName] = useState('');
     const [payments, setPayments] = useState([]);
     const [loading, setLoading] = useState(true);
     const [amount, setAmount] = useState('');
@@ -19,6 +21,23 @@ const PaymentHistory = ({ project_id, unitId }) => {
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
 
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        fetch(`${API_URI}/projects/${project_id}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                setProjectName(data.project_name);
+            })
+            .catch(error => {
+                console.error('Error fetching project name:', error);
+            });
+    }, [project_id]);
+    
     useEffect(() => {
         if (!unitId) {
             console.error('Unit ID is undefined');
@@ -44,9 +63,25 @@ const PaymentHistory = ({ project_id, unitId }) => {
             });
     }, [unitId]);
 
+    const handleSortByDate = () => {
+        const sortedPayments = [...filteredPayments].sort((a, b) => {
+            const dateA = new Date(a.date);
+            const dateB = new Date(b.date);
+            
+            if (sortOrder === 'asc') {
+                return dateA - dateB; // Ascending order
+            } else {
+                return dateB - dateA; // Descending order
+            }
+        });
+    
+        setPayments(sortedPayments); // Update payments with sorted array
+        setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc'); // Toggle sort order
+    };    
+
     const handleAddPayment = (event) => {
         event.preventDefault();
-        
+
         const newPayment = {
             project_id: project_id,
             unit_id: unitId,
@@ -87,19 +122,22 @@ const PaymentHistory = ({ project_id, unitId }) => {
     };
 
     const handleDeletePayment = (paymentId) => {
-        fetch(`${API_URI}/payment_history/${paymentId}`, {
-            method: 'DELETE',
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Failed to delete payment');
-                }
-                setPayments(payments.filter(payment => payment.id !== paymentId)); // Remove the deleted payment from the state
+        const confirmDelete = window.confirm('Are you sure you want to delete this payment?');
+        if (confirmDelete) {
+            fetch(`${API_URI}/payment_history/${paymentId}`, {
+                method: 'DELETE',
             })
-            .catch(error => {
-                console.error('Error deleting payment:', error);
-                setError('Failed to delete payment. Please try again.');
-            });
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to delete payment');
+                    }
+                    setPayments(payments.filter(payment => payment.id !== paymentId)); // Remove the deleted payment from the state
+                })
+                .catch(error => {
+                    console.error('Error deleting payment:', error);
+                    setError('Failed to delete payment. Please try again.');
+                });
+        }
     };
 
     // Filter payments by date range
@@ -111,13 +149,16 @@ const PaymentHistory = ({ project_id, unitId }) => {
         return (!start || paymentDate >= start) && (!end || paymentDate <= end);
     });
 
+    // Calculate the total amount for filtered payments
+    const filteredTotalAmount = filteredPayments.reduce((acc, payment) => acc + payment.amount, 0);
+
     if (loading) {
         return <div>Loading...</div>;
     }
 
     return (
         <div>
-            <h1>Payment History for Project {project_id}</h1>
+            <h1>Payment History for {project_name}</h1>
             
             {error && <div className="error">{error}</div>}
 
@@ -144,7 +185,7 @@ const PaymentHistory = ({ project_id, unitId }) => {
             <table>
                 <thead>
                     <tr>
-                        <th>Date</th>
+                        <th onClick={handleSortByDate}>Date {sortOrder === 'asc' ? '▲' : '▼'}</th>
                         <th>Description (বিবরণ)</th>
                         <th>Cash/Bank</th>
                         <th>Amount</th>
@@ -169,6 +210,10 @@ const PaymentHistory = ({ project_id, unitId }) => {
                             </tr>
                         ))
                     )}
+                    <tr>
+                        <td colSpan={3}></td>
+                        <td>Total Amount: {filteredTotalAmount}</td>
+                    </tr>
                 </tbody>
             </table>
 
