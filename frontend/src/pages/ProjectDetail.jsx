@@ -101,7 +101,7 @@ const AddUnitForm = ({ projectId, onUnitAdded }) => {
                 />
             </label>
             <label>
-                Amount:
+                Settled Amount:
                 <input
                     type="number"
                     value={amount}
@@ -110,7 +110,7 @@ const AddUnitForm = ({ projectId, onUnitAdded }) => {
                 />
             </label>
             <label>
-                Paid:
+                Instalment Amount:
                 <input
                     type="number"
                     value={paid}
@@ -131,14 +131,20 @@ const AddUnitForm = ({ projectId, onUnitAdded }) => {
     );
 };
 
-const projectName = ({ id }) => {
+const ProjectDetail = ({ id }) => {
+    const [units, setUnits] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [showAddUnitForm, setShowAddUnitForm] = useState(false);
     const [projectName, setProjectName] = useState('');
+    const [dueAmounts, setDueAmounts] = useState({});
+
     useEffect(() => {
         if (!id) {
             console.error('Project ID is undefined');
             return;
         }
 
+        // Fetch project name
         fetch(`${API_URI}/projects/${id}`)
             .then(response => {
                 if (!response.ok) {
@@ -147,25 +153,14 @@ const projectName = ({ id }) => {
                 return response.json();
             })
             .then(data => {
+                console.log('Project data:', data);
                 setProjectName(data.name || `Project ${id}`);
             })
             .catch(error => {
                 console.error('Error fetching project name:', error);
             });
-    }, [id]);
-};
-    
-const ProjectDetail = ({ id }) => {
-    const [units, setUnits] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [showAddUnitForm, setShowAddUnitForm] = useState(false);
 
-    useEffect(() => {
-        if (!id) {
-            console.error('Project ID is undefined');
-            return;
-        }
-
+        // Fetch units
         fetch(`${API_URI}/units/?project_id=${id}`)
             .then(response => {
                 if (!response.ok) {
@@ -174,14 +169,37 @@ const ProjectDetail = ({ id }) => {
                 return response.json();
             })
             .then(data => {
+                console.log('Units data:', data);
                 setUnits(data);
                 setLoading(false);
+                data.forEach(unit => fetchDueAmount(unit.id, unit.amount));
             })
             .catch(error => {
                 console.error('Error fetching units:', error);
                 setLoading(false);
             });
     }, [id]);
+
+    const fetchDueAmount = (unitId, settledAmount) => {
+        console.log(`Fetching due amount for unit ${unitId} with settled amount ${settledAmount}`);
+        fetch(`${API_URI}/payment_history/${unitId}`)
+            .then(response => response.json())
+            .then(payments => {
+                console.log(`Payments for unit ${unitId}:`, payments);
+                if (Array.isArray(payments)) {
+                    const totalPaid = payments.reduce((sum, payment) => sum + payment.amount, 0);
+                    console.log(`Total paid for unit ${unitId}: ${totalPaid}`);
+                    setDueAmounts(prev => ({ ...prev, [unitId]: settledAmount - totalPaid }));
+                } else {
+                    console.error('Payments response is not an array:', payments);
+                    setDueAmounts(prev => ({ ...prev, [unitId]: 'Error' }));
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching payments:', error);
+                setDueAmounts(prev => ({ ...prev, [unitId]: 'Error' }));
+            });
+    };
 
     const handleAddUnitClick = () => {
         setShowAddUnitForm(true);
@@ -191,27 +209,13 @@ const ProjectDetail = ({ id }) => {
         setShowAddUnitForm(false);
         fetch(`${API_URI}/units/?project_id=${id}`)
             .then(response => response.json())
-            .then(data => setUnits(data))
+            .then(data => {
+                console.log('Updated units data:', data);
+                setUnits(data);
+                data.forEach(unit => fetchDueAmount(unit.id, unit.amount));
+            })
             .catch(error => console.error('Error fetching units:', error));
     };
-
-    // const handleDeleteUnit = (unitId) => {
-    //     if (!window.confirm('Are you sure you want to delete this unit?')) {
-    //         return;
-    //     }
-
-    //     fetch(`${API_URI}/units/${unitId}`, {
-    //         method: 'DELETE',
-    //     })
-    //         .then(response => {
-    //             if (!response.ok) {
-    //                 throw new Error('Failed to delete unit');
-    //             }
-    //             setUnits(units.filter(unit => unit.id !== unitId));
-    //             console.log('Unit deleted successfully');
-    //         })
-    //         .catch(error => console.error('Error deleting unit:', error));
-    // };
 
     if (loading) {
         return <div>Loading...</div>;
@@ -229,8 +233,8 @@ const ProjectDetail = ({ id }) => {
                         <th>Phone Number</th>
                         <th>NID</th>
                         <th>Settled Amount</th>
-                        <th>Paid</th>
-                        <th>Purchase Status</th>
+                        <th>Instalment Amount</th>
+                        <th>Due Amount</th> {/* New column */}
                         <th className="actions-column">Actions</th>
                     </tr>
                 </thead>
@@ -249,7 +253,7 @@ const ProjectDetail = ({ id }) => {
                                 <td>{unit.client_nid}</td>
                                 <td>{unit.amount}</td>
                                 <td style={{minWidth:'10px'}}>{unit.paid}</td>
-                                <td>{unit.sold ? 'Sold' : 'Available'}</td>
+                                <td>{dueAmounts[unit.id] !== undefined ? dueAmounts[unit.id] : 'Calculating...'}</td> {/* Due amount */}
                                 <td className='actions-column'>
                                     <button>
                                         <Link href={`/payment_history/${id}/${unit.id}`} style={{ color: 'white' }}>
