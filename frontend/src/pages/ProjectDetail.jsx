@@ -5,16 +5,15 @@ import '../styles/Table.css';
 
 const API_URI = 'http://103.191.241.13:4000';
 
-const AddUnitForm = ({ projectId, onUnitAdded }) => {
-    // Form state management code remains the same
-    const [unitName, setUnitName] = useState('');
-    const [date, setDate] = useState('');
-    const [clientName, setClientName] = useState('');
-    const [clientNumber, setClientNumber] = useState('');
-    const [clientNid, setClientNid] = useState('');
-    const [amount, setAmount] = useState(0);
-    const [paid, setPaid] = useState(0);
-    const [sold, setSold] = useState(false);
+const AddOrEditUnitForm = ({ projectId, unitToEdit, onUnitAddedOrEdited }) => {
+    const [unitName, setUnitName] = useState(unitToEdit ? unitToEdit.unit_name : '');
+    const [date, setDate] = useState(unitToEdit ? unitToEdit.date : '');
+    const [clientName, setClientName] = useState(unitToEdit ? unitToEdit.client_name : '');
+    const [clientNumber, setClientNumber] = useState(unitToEdit ? unitToEdit.client_number : '');
+    const [clientNid, setClientNid] = useState(unitToEdit ? unitToEdit.client_nid : '');
+    const [amount, setAmount] = useState(unitToEdit ? unitToEdit.amount : 0);
+    const [paid, setPaid] = useState(unitToEdit ? unitToEdit.paid : 0);
+    const [sold, setSold] = useState(unitToEdit ? unitToEdit.sold : false);
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -31,8 +30,14 @@ const AddUnitForm = ({ projectId, onUnitAdded }) => {
             sold: sold,
         };
 
-        fetch(`${API_URI}/units/`, {
-            method: 'POST',
+        const url = unitToEdit
+            ? `${API_URI}/units/${unitToEdit.id}`
+            : `${API_URI}/units/`;
+
+        const method = unitToEdit ? 'PUT' : 'POST';
+
+        fetch(url, {
+            method: method,
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -45,15 +50,15 @@ const AddUnitForm = ({ projectId, onUnitAdded }) => {
                 return response.json();
             })
             .then(data => {
-                console.log('Unit added:', data);
-                onUnitAdded(); // Call the callback to refresh data or close the form
+                console.log(unitToEdit ? 'Unit updated:' : 'Unit added:', data);
+                onUnitAddedOrEdited();
             })
-            .catch(error => console.error('Error adding unit:', error));
+            .catch(error => console.error(unitToEdit ? 'Error updating unit:' : 'Error adding unit:', error));
     };
 
     return (
         <form onSubmit={handleSubmit}>
-            <h2>Add New Unit</h2>
+            <h2>{unitToEdit ? 'Edit Unit' : 'Add New Unit'}</h2>
             {/* Form inputs remain the same */}
             <label>
                 Unit Name:
@@ -126,7 +131,7 @@ const AddUnitForm = ({ projectId, onUnitAdded }) => {
                     onChange={(e) => setSold(e.target.checked)}
                 />
             </label>
-            <button type="submit">Add Unit</button>
+            <button type="submit">{unitToEdit ? 'Update Unit' : 'Add Unit'}</button>
         </form>
     );
 };
@@ -137,6 +142,7 @@ const ProjectDetail = ({ id }) => {
     const [showAddUnitForm, setShowAddUnitForm] = useState(false);
     const [projectName, setProjectName] = useState('');
     const [dueAmounts, setDueAmounts] = useState({});
+    const [unitToEdit, setUnitToEdit] = useState(null);
 
     useEffect(() => {
         if (!id) {
@@ -205,8 +211,14 @@ const ProjectDetail = ({ id }) => {
         setShowAddUnitForm(true);
     };
 
-    const handleUnitAdded = () => {
+    const handleEditUnit = (unit) => {
+        setUnitToEdit(unit);
+        setShowAddUnitForm(true);
+    };
+
+    const handleUnitAddedOrEdited = () => {
         setShowAddUnitForm(false);
+        setUnitToEdit(null);
         fetch(`${API_URI}/units/?project_id=${id}`)
             .then(response => response.json())
             .then(data => {
@@ -260,9 +272,9 @@ const ProjectDetail = ({ id }) => {
                                             View Payments
                                         </Link>
                                     </button>
-                                    {/* <button onClick={() => handleDeleteUnit(unit.id)}>
-                                        Delete
-                                    </button> */}
+                                    <button onClick={() => handleEditUnit(unit)}>
+                                        Edit
+                                    </button>
                                 </td>
                             </tr>
                         ))
@@ -276,9 +288,10 @@ const ProjectDetail = ({ id }) => {
             </table>
 
             {showAddUnitForm && (
-                <AddUnitForm
+                <AddOrEditUnitForm
                     projectId={id}
-                    onUnitAdded={handleUnitAdded}
+                    unitToEdit={unitToEdit}
+                    onUnitAddedOrEdited={handleUnitAddedOrEdited}
                 />
             )}
         </div>
