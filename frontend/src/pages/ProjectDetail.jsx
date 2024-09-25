@@ -235,7 +235,7 @@ const ProjectDetail = ({ id }) => {
 
     return (
         <div>
-            <h1>Units for Project {projectName}</h1>
+            <h1>Units for {projectName}</h1>
             <table>
                 <thead>
                     <tr>

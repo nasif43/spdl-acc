@@ -6,7 +6,7 @@ const API_URI = 'http://103.191.241.13:4000';
 
 const PaymentHistory = ({ project_id, unitId }) => {
     const [sortOrder, setSortOrder] = useState('asc'); // 'asc' for ascending, 'desc' for descending
-    const [project_name, setProjectName] = useState('');
+    const [clientName, setClientName] = useState('');
     const [payments, setPayments] = useState([]);
     const [loading, setLoading] = useState(true);
     const [amount, setAmount] = useState('');
@@ -24,22 +24,6 @@ const PaymentHistory = ({ project_id, unitId }) => {
     const [endDate, setEndDate] = useState('');
     const [editingPaymentId, setEditingPaymentId] = useState(null); // New state to track the payment being edited
 
-    useEffect(() => {
-        fetch(`${API_URI}/projects/${project_id}`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                setProjectName(data.name);
-            })
-            .catch(error => {
-                console.error('Error fetching project name:', error);
-            });
-    }, [project_id]);
-    
     useEffect(() => {
         if (!unitId) {
             console.error('Unit ID is undefined');
@@ -80,6 +64,7 @@ const PaymentHistory = ({ project_id, unitId }) => {
                 if (unit) {
                     setSettledAmount(unit.amount);
                     setInstalmentAmount(unit.paid);
+                    setClientName(unit.client_name);
                 }
             })
             .catch(error => {
@@ -225,7 +210,7 @@ const PaymentHistory = ({ project_id, unitId }) => {
 
     return (
         <div>
-            <h1>Payment History for {project_name}</h1>
+            <h1>Payment History for {clientName}</h1>
             
             {error && <div className="error">{error}</div>}
 
