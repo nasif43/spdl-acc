@@ -34,6 +34,9 @@ def update_project(db: Session, project_id: int, project: schemas.ProjectUpdate)
 def get_units(db: Session, project_id: int):
     return db.query(models.Unit).filter(models.Unit.project_id == project_id).all()
 
+def get_unit_by_id(db: Session, unit_id: int):
+    return db.query(models.Unit).filter(models.Unit.id == unit_id).first()
+
 def create_unit(db: Session, unit: schemas.UnitCreate):
     db_unit = models.Unit(**unit.model_dump())
     db.add(db_unit)
