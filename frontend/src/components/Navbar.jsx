@@ -14,7 +14,7 @@ const Navbar = () => {
       <Link href="/">
         <img src={logo} alt="SPDL" className="logo" />
       </Link>
-      <h4>Sarker Properties and Development Ltd.</h4>
+      <h3 style={{ color: '#f0b429' }}>Sarker Properties and Developments Ltd.</h3>
       <button onClick={handleLogout}>Logout</button>
     </nav>
   );

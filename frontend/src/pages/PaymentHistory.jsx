@@ -1,6 +1,8 @@
 import { h } from 'preact';
 import { useEffect, useState } from 'preact/hooks';
 import '../styles/Table.css';
+import CashMemo from '../components/CashMemo';
+import inWords from '../utils/inWords';
 
 const API_URI = 'http://103.191.241.13:4000';
 
@@ -16,13 +18,32 @@ const PaymentHistory = ({ project_id, unitId }) => {
     const [remarks, setRemarks] = useState('');
     const [error, setError] = useState('');
     const [showForm, setShowForm] = useState(false);
+    const [showCashMemo, setShowCashMemo] = useState(false); // New state for showing CashMemo
+    const [selectedPayment, setSelectedPayment] = useState(null); // New state for selected payment
     const [instalmentAmount, setInstalmentAmount] = useState(''); // Renamed to instalmentAmount
     const [settledAmount, setSettledAmount] = useState(''); // Renamed to settledAmount
-    
+    const [unitName, setUnitName] = useState('');
+    const [projectName, setProjectName] = useState('');
     // State for date filter
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
     const [editingPaymentId, setEditingPaymentId] = useState(null); // New state to track the payment being edited
+
+    useEffect(() => {
+        fetch(`${API_URI}/projects/${project_id}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                setProjectName(data.name);
+            })
+            .catch(error => {
+                console.error('Error fetching project details:', error);
+            });
+    }, [project_id]);
 
     useEffect(() => {
         if (!unitId) {
@@ -65,6 +86,7 @@ const PaymentHistory = ({ project_id, unitId }) => {
                     setSettledAmount(unit.amount);
                     setInstalmentAmount(unit.paid);
                     setClientName(unit.client_name);
+                    setUnitName(unit.unit_name);
                 }
             })
             .catch(error => {
@@ -192,12 +214,19 @@ const PaymentHistory = ({ project_id, unitId }) => {
         }
     };
 
+    const handleGenerateCashMemo = (payment) => {
+        console.log('Selected Payment:', payment);
+        console.log('Amount in Words:', inWords(parseFloat(payment.amount)));
+        setSelectedPayment(payment);
+        setShowCashMemo(true);
+    };
+
     // Filter payments by date range
     const filteredPayments = payments.filter(payment => {
         const paymentDate = new Date(payment.date);
         const start = startDate ? new Date(startDate) : null;
         const end = endDate ? new Date(endDate) : null;
-
+        
         return (!start || paymentDate >= start) && (!end || paymentDate <= end);
     });
     
@@ -206,6 +235,20 @@ const PaymentHistory = ({ project_id, unitId }) => {
     
     if (loading) {
         return <div>Loading...</div>;
+    }
+    
+    if (showCashMemo && selectedPayment) {
+        return (
+            <CashMemo
+                date={selectedPayment.date}
+                clientName={clientName}
+                projectName={projectName}
+                unit={unitName}
+                paymentMethod={selectedPayment.cash_bank}
+                amount={selectedPayment.amount}
+                amountInWords={inWords(parseFloat(selectedPayment.amount))}
+            />
+        );
     }
 
     return (
@@ -259,6 +302,7 @@ const PaymentHistory = ({ project_id, unitId }) => {
                                 <td className='actions-column'>
                                     <button onClick={() => handleDeletePayment(payment.id)}>Delete</button>
                                     <button onClick={() => handleEditPayment(payment.id)}>Edit</button>
+                                    <button onClick={() => handleGenerateCashMemo(payment)}>Generate Cash Memo</button>
                                 </td>
                             </tr>
                         ))
@@ -327,6 +371,6 @@ const PaymentHistory = ({ project_id, unitId }) => {
             )}
         </div>
     );
-};
+}; 
 
 export default PaymentHistory;

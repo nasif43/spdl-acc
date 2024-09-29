@@ -80,6 +80,9 @@ function DailyBillsCard({ project_id }) {
 
   const handleAddOrUpdateBill = (e) => {
     e.preventDefault();
+    if (!confirm('Are you sure you want to add or update this bill?')) {
+        return; // Exit if the user cancels
+    }
     const billData = {
       project_id: parseInt(project_id),
       upfront_cost: upFrontCost,

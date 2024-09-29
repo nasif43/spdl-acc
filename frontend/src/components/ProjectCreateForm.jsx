@@ -23,6 +23,9 @@ function ProjectCreateForm() {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        if (!confirm('Are you sure you want to create this project?')) {
+            return; // Exit if the user cancels
+        }
         setIsSubmitting(true);
         setError(null);
         setSuccessMessage(null);
