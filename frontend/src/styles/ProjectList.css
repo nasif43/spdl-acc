@@ -67,7 +67,7 @@
 }
 
 .project-card button:hover {
-    background-color: #456fa0; /* Green on hover */
+    background-color: #45a049; /* Green on hover */
     transform: translateY(-2px); /* Lift effect on hover */
 }
 
