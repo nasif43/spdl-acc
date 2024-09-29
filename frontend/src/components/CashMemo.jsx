@@ -65,23 +65,26 @@ const CashMemo = ({ date, clientName, projectName, unit, paymentMethod, amount, 
         </table>
       </div>
       <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '40px' }}>
-        <div>
+        <div style={{ flex: '1', textAlign: 'center' }}>
           <hr style={{ width: '200px', marginBottom: '5px' }} />
           <p>Client Signature</p>
         </div>
-        <div>
+        <div style={{ flex: '1', textAlign: 'center' }}>
           <hr style={{ width: '200px', marginBottom: '5px' }} />
           <p>Accounts Signature</p>
         </div>
+        <div style={{ flex: '1', textAlign: 'center' }}>
+          <hr style={{ width: '200px', marginBottom: '5px' }} />
+          <p>SPDL Management</p>
+        </div>
       </div>
       <div style={{ textAlign: 'center', marginTop: '40px' }}>
-        <p>SPDL Management</p>
         <p>Received with thanks from Sarker Properties & Developments Ltd</p>
         <h3>THANK YOU</h3>
       </div>
-      <div style={{ textAlign: 'center', marginTop: '20px', fontSize: '12px' }}>
+      <footer style={{ textAlign: 'center', marginTop: '20px', fontSize: '12px', borderTop: '1px solid #ccc', paddingTop: '10px' }}>
         <p>Office: House 41, Road Gareb-E-Newaz Avenue, Sector 11, Uttara, Dhaka-1230.</p>
-      </div>
+      </footer>
     </div>
   );
 };
