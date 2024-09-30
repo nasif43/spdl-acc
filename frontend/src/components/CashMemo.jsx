@@ -37,9 +37,9 @@ const CashMemo = ({ date, clientName, projectName, unit, paymentMethod, amount, 
               <td>By Cash / Cheque No</td>
               <td> {paymentMethod}</td>
             </tr>
-            <tr>
+            <tr style={{ maxHeight: '40px', overflow: 'hidden' }}>
               <td>P.O/TID NO</td>
-              <td> </td>
+              <td><input type="text" name="poTidNo" style={{ maxHeight: '30px' }} /></td>
             </tr>
           </tbody>
         </table>
