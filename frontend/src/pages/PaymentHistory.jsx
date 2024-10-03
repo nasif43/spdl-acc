@@ -302,7 +302,7 @@ const PaymentHistory = ({ project_id, unitId }) => {
                                 <td className='actions-column'>
                                     <button onClick={() => handleDeletePayment(payment.id)}>Delete</button>
                                     <button onClick={() => handleEditPayment(payment.id)}>Edit</button>
-                                    <button onClick={() => handleGenerateCashMemo(payment)}>Generate Cash Memo</button>
+                                    <button onClick={() => handleGenerateCashMemo(payment)}>Money Receipt</button>
                                 </td>
                             </tr>
                         ))
