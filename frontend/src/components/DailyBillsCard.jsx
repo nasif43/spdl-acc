@@ -28,7 +28,6 @@ function DailyBillsCard({ project_id }) {
   const [totalBill, setTotalBill] = useState(0);
   const [totalPaid, setTotalPaid] = useState(0);
   const [totalDue, setTotalDue] = useState(0);
-
   // Calculate total bill, paid, and due
   useEffect(() => {
     const totalBillAmount = bills.reduce((total, bill) => total + bill.due, 0);
@@ -221,6 +220,7 @@ function DailyBillsCard({ project_id }) {
                 <th style={{minWidth: '10px'}}>QTY</th>
                 <th style={{minWidth: '10px'}}>Bill</th>
                 <th style={{minWidth: '8px'}}>Paid</th>
+                <th style={{minWidth: '8px'}}>Due</th>
                 <th style={{minWidth: '50px'}}>Note</th>
                 <th className="actions-column" style={{minWidth: '200px'}}>Actions</th> {/* Add an actions column */}
               </tr>
@@ -239,6 +239,7 @@ function DailyBillsCard({ project_id }) {
                       <td>{bill.labour}</td>
                       <td>{bill.due}</td>
                       <td>{bill.paid}</td>
+                      <td>{bill.due - bill.paid}</td>
                       <td>{bill.note}</td>
                       <td className="actions-column" style={{maxWidth: '15px'}}>
                         <button onClick={() => handleEditBill(bill)}>Edit </button>
@@ -247,10 +248,10 @@ function DailyBillsCard({ project_id }) {
                     </tr>
                   ))}
                   <tr>
-                    <td colSpan={3}></td>
+                    <td colSpan={3}> Total </td>
                     <td style={{ fontWeight: 'bold' }}>{totalBill}</td>
                     <td style={{fontWeight: 'bold'}}>{totalPaid}</td>
-                    <td style={{fontWeight:'bold'}}>Total Due: {totalDue}</td>
+                    <td style={{fontWeight:'bold'}}>{totalDue}</td>
                   </tr>
                 </>
               )}
