@@ -184,88 +184,92 @@ function DailyBillsCard({ project_id }) {
   };
 
   return (
-    <div style={{ padding: '10px' }}>
-      <div className="start-and-end-dates"><label>
-        Start Date:
-        <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
-      </label>
-      <label>
-        End Date:
-        <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
-      </label>
+    <div style={{ padding: '10px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+      <div className="start-and-end-dates" style={{ display: 'flex', gap: '10px' }}>
+        <label>
+          Start Date:
+          <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
+        </label>
+        <label>
+          End Date:
+          <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
+        </label>
       </div>
-      <label>
-        Description:
-        <select value={descriptionFiler} onChange={(e) => setDescriptionFilter(e.target.value)}>
-          <option value="">All</option>
-          {BILL_DESCRIPTIONS.map((item) => (
-            <option key={item.value} value={item.value}>{item.label}</option>
-          ))}
-        </select>
-      </label>
-      <button onClick={fetchBills}>Filter Bills</button>
-      <div>
-        <button style={{ marginRight: '5px' }} onClick={() => { setShowForm(false); setShowTable(true); fetchBills(); }}>View Bills</button>
-        <button style={{ marginLeft: '5px' }} onClick={() => { resetForm(); setShowForm(true); setShowTable(false); }}>Add Bill</button>
+      <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+        <label>
+          Description:
+          <select style={{height: '2rem', gap: '10px', backgroundColor: '#080550', color: 'white' }} value={descriptionFiler} onChange={(e) => setDescriptionFilter(e.target.value)}>
+            <option value="">All</option>
+            {BILL_DESCRIPTIONS.map((item) => (
+              <option className='filter-drop-down' key={item.value} value={item.value} >{item.label}</option>
+            ))}
+          </select>
+        </label>
+        <button onClick={fetchBills}>Filter Bills</button>
+      </div>
+      <div style={{ display: 'flex', gap: '10px' }}>
+        <button onClick={() => { setShowForm(false); setShowTable(true); fetchBills(); }}>View Bills</button>
+        <button onClick={() => { resetForm(); setShowForm(true); setShowTable(false); }}>Add Bill</button>
+      </div>
 
-        {error && <div className="error">{error}</div>}
-        {loading && <div>Loading...</div>}
+      {error && <div className="error">{error}</div>}
+      {loading && <div>Loading...</div>}
 
-        {showTable && !loading && (
-          <table>
-            <thead>
+      {showTable && !loading && (
+        <table>
+          <thead>
+            <tr>
+              <th style={{maxWidth: '10px'}}>Date</th>
+              <th style={{minWidth: '55px'}}>Description</th>
+              <th style={{minWidth: '10px'}}>QTY</th>
+              <th style={{minWidth: '10px'}}>Bill</th>
+              <th style={{minWidth: '8px'}}>Paid</th>
+              <th style={{minWidth: '8px'}}>Due</th>
+              <th style={{minWidth: '50px'}}>Note</th>
+              <th className="actions-column" style={{minWidth: '200px'}}>Actions</th> {/* Add an actions column */}
+            </tr>
+          </thead>
+          <tbody>
+            {bills.length === 0 ? (
               <tr>
-                <th style={{maxWidth: '10px'}}>Date</th>
-                <th style={{minWidth: '55px'}}>Description</th>
-                <th style={{minWidth: '10px'}}>QTY</th>
-                <th style={{minWidth: '10px'}}>Bill</th>
-                <th style={{minWidth: '8px'}}>Paid</th>
-                <th style={{minWidth: '8px'}}>Due</th>
-                <th style={{minWidth: '50px'}}>Note</th>
-                <th className="actions-column" style={{minWidth: '200px'}}>Actions</th> {/* Add an actions column */}
+                <td colSpan="7">No bills available for this project.</td>
               </tr>
-            </thead>
-            <tbody>
-              {bills.length === 0 ? (
-                <tr>
-                  <td colSpan="7">No bills available for this project.</td>
-                </tr>
-              ) : (
-                <>
-                  {bills.map(bill => (
-                    <tr key={bill.id}>
-                      <td>{new Date(bill.date).toLocaleDateString('en-GB')}</td>
-                      <td>{bill.description}</td>
-                      <td>{bill.labour}</td>
-                      <td>{bill.due}</td>
-                      <td>{bill.paid}</td>
-                      <td>{bill.due - bill.paid}</td>
-                      <td>{bill.note}</td>
-                      <td className="actions-column" style={{maxWidth: '15px'}}>
-                        <button onClick={() => handleEditBill(bill)}>Edit </button>
-                        <button onClick={() => handleDeleteBill(bill.id)}>Delete</button>
-                      </td>
-                    </tr>
-                  ))}
-                  <tr>
-                    <td colSpan={3}> Total </td>
-                    <td style={{ fontWeight: 'bold' }}>{totalBill}</td>
-                    <td style={{fontWeight: 'bold'}}>{totalPaid}</td>
-                    <td style={{fontWeight:'bold'}}>{totalDue}</td>
+            ) : (
+              <>
+                {bills.map(bill => (
+                  <tr key={bill.id}>
+                    <td>{new Date(bill.date).toLocaleDateString('en-GB')}</td>
+                    <td>{bill.description}</td>
+                    <td>{bill.labour}</td>
+                    <td>{bill.due}</td>
+                    <td>{bill.paid}</td>
+                    <td>{bill.due - bill.paid}</td>
+                    <td>{bill.note}</td>
+                    <td className="actions-column" style={{maxWidth: '15px'}}>
+                      <button onClick={() => handleEditBill(bill)}>Edit </button>
+                      <button onClick={() => handleDeleteBill(bill.id)}>Delete</button>
+                    </td>
                   </tr>
-                </>
-              )}
-            </tbody>
-          </table>
-        )}
+                ))}
+                <tr>
+                  <td colSpan={3}> Total </td>
+                  <td style={{ fontWeight: 'bold' }}>{totalBill}</td>
+                  <td style={{fontWeight: 'bold'}}>{totalPaid}</td>
+                  <td style={{fontWeight:'bold'}}>{totalDue}</td>
+                </tr>
+              </>
+            )}
+          </tbody>
+        </table>
+      )}
 
-        {showForm && (
-          <form onSubmit={handleAddOrUpdateBill}>
-            <label>
-              Date:
-              <input type="date" value={date} onChange={(e) => setDate(e.target.value)} required />
-            </label>
-            <label>
+      {showForm && (
+        <form onSubmit={handleAddOrUpdateBill} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+          <label>
+            Date:
+            <input type="date" value={date} onChange={(e) => setDate(e.target.value)} required />
+          </label>
+          <label>
             Description (বিবরণ):
             <select value={description} onChange={(e) => setDescription(e.target.value)} required>
               <option value="" disabled>আইটেম বাছাই করুন</option>
@@ -274,28 +278,28 @@ function DailyBillsCard({ project_id }) {
               ))}
             </select>
           </label>
-
-            <label>
-              Quantity (সংখ্যা):
-              <input type="number" value={labour} onChange={(e) => setLabour(e.target.value)} />
-            </label>
-            <label>
-              Bill Amount:
-              <input type="number" value={due} onChange={(e) => setDue(e.target.value)} required />
-            </label>
-            <label>
-              Paid:
-              <input type="number" value={paid} onChange={(e) => setPaid(e.target.value)} required />
-            </label>
-            <label>
-              Note:
-              <textarea value={note} onChange={(e) => setNote(e.target.value)} />
-            </label>
+          <label>
+            Quantity (সংখ্যা):
+            <input type="number" value={labour} onChange={(e) => setLabour(e.target.value)} />
+          </label>
+          <label>
+            Bill Amount:
+            <input type="number" value={due} onChange={(e) => setDue(e.target.value)} required />
+          </label>
+          <label>
+            Paid:
+            <input type="number" value={paid} onChange={(e) => setPaid(e.target.value)} required />
+          </label>
+          <label>
+            Note:
+            <textarea value={note} onChange={(e) => setNote(e.target.value)} />
+          </label>
+          <div style={{ display: 'flex', gap: '10px' }}>
             <button type="submit">Save</button>
             <button type="button" onClick={resetForm}>Cancel</button>
-          </form>
-        )}
-      </div>
+          </div>
+        </form>
+      )}
     </div>
   );
 }

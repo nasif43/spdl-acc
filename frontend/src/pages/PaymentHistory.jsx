@@ -258,7 +258,7 @@ const PaymentHistory = ({ project_id, unitId }) => {
             {error && <div className="error">{error}</div>}
 
             {/* Date Filter Inputs */}
-            <div>
+            <div style={{display:'flex', gap:'10px'}}>
                 <label>
                     Start Date:
                     <input
