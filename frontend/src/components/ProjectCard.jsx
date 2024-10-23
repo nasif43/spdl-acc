@@ -5,7 +5,7 @@ import '../styles/ProjectCard.css'; // Add your styles here
 
 const API_URI = 'http://103.191.241.13:4000';
 
-function ProjectCard({ project, onDelete }) {
+function ProjectCard({ project, onDelete, userRole }) {
   const [isEditing, setIsEditing] = useState(false);
   const [showEditDelete, setShowEditDelete] = useState(false);
   const [name, setName] = useState(project.name);
@@ -97,20 +97,28 @@ function ProjectCard({ project, onDelete }) {
       <p>Start Date: {project.start_date}</p>
       <p>Status: {project.status}</p>
       
-      <button onClick={handleToggle} style={{ marginRight: '10px'}}>
-        {showEditDelete ? 'Inflow/Outflow' : 'Edit/Delete'}
-      </button>
+      {userRole !== 'site engineer' && (
+        <>
+          <button onClick={handleToggle} style={{ marginRight: '10px'}}>
+            {showEditDelete ? 'Inflow/Outflow' : 'Edit/Delete'}
+          </button>
 
-      {showEditDelete ? (
-        <>
-          <button onClick={handleEdit} style={{ marginRight: '5px' }}>Edit</button>
-          <button onClick={handleDelete} style={{ marginLeft: '5px' }}>Delete</button>
+          {showEditDelete ? (
+            <>
+              <button onClick={handleEdit} style={{ marginRight: '5px' }}>Edit</button>
+              <button onClick={handleDelete} style={{ marginLeft: '5px' }}>Delete</button>
+            </>
+          ) : (
+            <>
+              <Link href={`/projects/${project.id}`}><button style={{ marginRight: '5px' }}>Inflow</button></Link>
+              <Link href={`/projects/${project.id}/outflow`}><button style={{ marginLeft: '5px' }}>Outflow</button></Link>
+            </>
+          )}
         </>
-      ) : (
-        <>
-          <Link href={`/projects/${project.id}`}><button style={{ marginRight: '5px' }}>Inflow</button></Link>
-          <Link href={`/projects/${project.id}/outflow`}><button style={{ marginLeft: '5px' }}>Outflow</button></Link>
-        </>
+      )}
+
+      {userRole === 'site engineer' && (
+        <Link href={`/projects/${project.id}/outflow`}><button style={{ marginLeft: '5px' }}>Outflow</button></Link>
       )}
 
       {/* Edit Modal */}

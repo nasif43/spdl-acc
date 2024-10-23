@@ -28,8 +28,10 @@ function DailyBillsCard({ project_id }) {
   const [totalBill, setTotalBill] = useState(0);
   const [totalPaid, setTotalPaid] = useState(0);
   const [totalDue, setTotalDue] = useState(0);
+  const [userRole, setUserRole] = useState('');
   // Calculate total bill, paid, and due
   useEffect(() => {
+    setUserRole(localStorage.getItem('userRole') || '');
     const totalBillAmount = bills.reduce((total, bill) => total + bill.due, 0);
     const totalPaidAmount = bills.reduce((total, bill) => total + bill.paid, 0);
     const totalDueAmount = totalBillAmount - totalPaidAmount;
@@ -288,7 +290,13 @@ function DailyBillsCard({ project_id }) {
           </label>
           <label>
             Paid:
-            <input type="number" value={paid} onChange={(e) => setPaid(e.target.value)} required />
+            <input 
+              type="number" 
+              value={paid} 
+              onChange={(e) => setPaid(e.target.value)} 
+              required 
+              disabled={userRole === 'site engineer'}
+            />
           </label>
           <label>
             Note:

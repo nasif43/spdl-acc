@@ -21,8 +21,9 @@ const LoginForm = () => {
             });
             if (response.ok) {
                 const data = await response.json();
-                localStorage.setItem('token', data.access_token); // Save token in local storage
-                window.location.href = '/'; // Redirect after successful login
+                localStorage.setItem('token', data.access_token);
+                localStorage.setItem('userRole', data.usertype); // Store the user role
+                window.location.href = '/';
             } else {
                 setError('Invalid username or password');
             }

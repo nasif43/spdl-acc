@@ -10,8 +10,10 @@ function ProjectList() {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [userRole, setUserRole] = useState('');
 
   useEffect(() => {
+    setUserRole(localStorage.getItem('userRole') || '');
     async function fetchProjects() {
       try {
         const response = await fetch(`${API_URI}/projects?page=1`);
@@ -34,19 +36,21 @@ function ProjectList() {
   if (error) return <div>Error: {error}</div>;
   
   return (
-      <div className="project-list">
-        {projects.length === 0 ? (
-          <div>No projects available</div>
-        ) : (
-          <><div className="project-card-container">
+    <div className="project-list">
+      {projects.length === 0 ? (
+        <div>No projects available</div>
+      ) : (
+        <>
+          <div className="project-card-container">
             {projects.map((project) => (
-              <ProjectCard key={project.id} project={project} />
+              <ProjectCard key={project.id} project={project} userRole={userRole} />
             ))}
           </div>
-          <div className="project-card-container"><ProjectCreateForm/></div></>
-        )}
-      </div>
-    );
+          <div className="project-card-container"><ProjectCreateForm/></div>
+        </>
+      )}
+    </div>
+  );
 }
 
 export default ProjectList;
