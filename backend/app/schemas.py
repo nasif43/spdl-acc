@@ -80,6 +80,7 @@ class DailyBilling(DailyBillingBase):
 class Token(BaseModel):
     access_token: str
     token_type: str
+    usertype: str
 
 class UserBase(BaseModel):
     id: Optional[int] = None
