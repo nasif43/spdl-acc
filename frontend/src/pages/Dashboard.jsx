@@ -12,6 +12,15 @@ const Dashboard = () => {
   const [totalBills, setTotalBills] = useState(0);
   const [selectedProject, setSelectedProject] = useState('');
   const [selectedDateRange, setSelectedDateRange] = useState([null, null]);
+  const [userRole, setUserRole] = useState('');
+
+  useEffect(() => {
+    setUserRole(localStorage.getItem('userRole') || '');
+  }, []);
+
+  if (userRole === 'site engineer') {
+    return <p>You do not have access to this page.</p>;
+  }
 
   useEffect(() => {
     fetch('http://103.191.241.13:4000/projects/?skip=0&limit=100')

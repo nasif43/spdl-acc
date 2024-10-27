@@ -1,0 +1,113 @@
+/* SideNav.module.css */
+/* SideNav.module.css */
+.sidenav {
+  position: fixed;
+  top: 60px; /* Adjusted to align with navbar */
+  left: 0;
+  height: calc(100vh - 60px); /* Height minus navbar */
+  width: 80px;
+  background-color: #080550;
+  color: whitesmoke;
+  transition: width 0.3s ease;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  z-index: 900;
+}
+
+.sidenav.open {
+  width: 240px;
+}
+
+/* Hide sidebar in print view */
+@media print {
+  .sidenav {
+    display: none;
+  }
+}
+
+
+.logoContainer {
+  display: flex;
+  align-items: left;
+  justify-content: space-between;
+  padding: 5px;
+  margin-bottom: 20px;
+}
+
+.logo {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+}
+
+.toggle {
+  background: none;
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+  padding: 0;
+}
+
+.menu {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  flex-grow: 1;
+}
+
+.menuItem {
+  display: flex;
+  align-items: center;
+  padding: 15px 20px;
+  color: goldenrod;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+}
+
+.menuItem:hover {
+  background-color: blue;
+}
+
+.menuItem.active {
+  background-color: whitesmoke;
+}
+
+.menuItem span {
+  margin-left: 15px;
+  white-space: nowrap;
+}
+
+.logout {
+  display: flex;
+  align-items: center;
+  padding: 15px 20px;
+  background: none;
+  border: none;
+  color: goldenrod;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  width: 100%;
+  text-align: left;
+}
+
+.logout:hover {
+  background-color: red;
+}
+
+.logout span {
+  margin-left: 15px;
+  white-space: nowrap;
+}
+
+/* Additional styling for the layout to adjust content */
+.mainContent {
+  margin-left: 80px;
+  transition: margin-left 0.3s ease;
+  width: calc(100% - 80px); /* Adjust width based on sidenav */
+}
+
+.sidenav.open + .mainContent {
+  margin-left: 240px;
+  width: calc(100% - 240px); /* Adjust width based on sidenav */
+}

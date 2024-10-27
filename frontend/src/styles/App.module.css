@@ -1,0 +1,28 @@
+/* App.module.css */
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.mainContentContainer {
+  display: flex;
+  flex: 1;
+}
+
+.mainContent {
+  flex: 1;
+  margin-left: 80px; /* Default margin for collapsed sidebar */
+  transition: margin-left 0.3s ease;
+}
+
+/* Push content when sidebar is open */
+.sidebarOpen + .mainContent {
+  margin-left: 240px;
+}
+
+/* Ensure main content takes full width in print view */
+@media print {
+  .mainContent {
+    margin-left: 0;
+  }
+}
