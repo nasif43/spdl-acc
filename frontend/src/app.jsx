@@ -15,10 +15,12 @@ import styles from './styles/App.module.css';
 function App() {
   const [isSidebarOpen, setSidebarOpen] = useState(true);
 
+  const toggleSidebar = () => setSidebarOpen((prev) => !prev);
+
   return (
     <div className={styles.container}>
-      <Navbar/>
-      <SideNav isOpen={isSidebarOpen} onToggle={(open) => setSidebarOpen(open)} />
+      <Navbar toggleSidebar={toggleSidebar} />
+      <SideNav isOpen={isSidebarOpen} onToggle={setSidebarOpen} />
       <main className={`${styles.mainContent} ${isSidebarOpen ? styles.sidebarOpen : ''}`}>
         <Router>
           <Route path="/login" component={Login} />
@@ -29,8 +31,6 @@ function App() {
           <PrivateRoute path="/dashboard" component={Dashboard} />
         </Router>
       </main>
-
-
     </div>
   );
 }

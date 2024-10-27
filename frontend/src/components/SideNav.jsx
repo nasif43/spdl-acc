@@ -1,7 +1,7 @@
-import { h } from 'preact';
+import { h } from 'preact'; 
 import { useState, useEffect } from 'preact/hooks';
 import { Link } from 'preact-router';
-import { LogOut, Menu, LucideLayoutDashboard, GaugeCircle } from 'lucide-preact';
+import { LogOut, LucideLayoutDashboard, GaugeCircle } from 'lucide-preact';
 import styles from '../styles/SideNav.module.css';
 
 const menuItems = [
@@ -21,23 +21,11 @@ export default function SideNav({ isOpen, onToggle }) {
     setOpen(isOpen);
   }, [isOpen]);
 
-  const toggleSidebar = () => {
-    const newOpen = !open;
-    setOpen(newOpen);
-    onToggle(newOpen);
-  };
-
   return (
     <nav className={`${styles.sidenav} ${open ? styles.open : ''}`}>
       <ul className={styles.menu}>
-        <div>
-          <button className={styles.toggle} onClick={toggleSidebar}>
-            <Menu size={24} />
-          </button>
-        </div>
         {menuItems.map(({ icon: Icon, text, href }) => (
           <li key={href}>
-            
             <Link
               href={href}
               className={`${styles.menuItem} ${window.location.pathname === href ? styles.active : ''}`}

@@ -1,7 +1,9 @@
 /* App.module.css */
+
 .container {
   display: flex;
   flex-direction: column;
+  height: 100vh; /* Full height to make the sidebar and content occupy the full viewport */
 }
 
 .mainContentContainer {
@@ -16,8 +18,15 @@
 }
 
 /* Push content when sidebar is open */
-.sidebarOpen + .mainContent {
+.sidebarOpen {
   margin-left: 240px;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .mainContent {
+    margin-left: 0; /* Sidebar will overlay on mobile */
+  }
 }
 
 /* Ensure main content takes full width in print view */

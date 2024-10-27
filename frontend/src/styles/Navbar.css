@@ -1,49 +1,69 @@
 /* src/styles/Navbar.css */
 
 .navbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background-color: #080550;
-    padding: 10px 20px;
-    color: white;
-    z-index: 110;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #080550;
+  padding: 10px 20px;
+  color: white;
+  z-index: 110;
+}
+
+.logo-button {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.logo {
+  height: 50px;
+  margin-left: 10px;
+  margin-right: 20px;
+}
+
+/* Hide all buttons in print view, but make an exception for the logo */
+@media print {
+  button {
+    display: none; /* General rule for hiding buttons */
+  }
+  
+  .logo-button {
+    display: inline; /* Overrides the display for logo button to make it print */
   }
   
   .logo {
-    height: 50px; /* Adjust the size as needed */
-    margin-right: 20px;
-    margin-left: 10px;
-    border: 50px white;
-    position: fixed;
-    top: .5rem;
+    display: inline; /* Ensures the logo image itself is also printed */
   }
-  
-  .nav-links {
-    list-style: none;
-    display: flex;
-    margin: 0;
-    padding: 0;
-  }
-  
-  .nav-links li {
-    margin-left: 20px;
-  }
-  
-  .nav-links a {
-    color: white;
-    text-decoration: none;
-    font-size: 16px;
-  }
-  
-  .nav-links a:hover {
-    text-decoration: underline;
-  }
-  .navbar-logo {
-    width: 200px; /* Adjust width as needed */
-    height: auto; /* Maintain aspect ratio */
-    min-width: 100px; /* Minimum width */
-    min-height: 50px; /* Minimum height */
-    max-width: 300px; /* Maximum width */
-    max-height: 150px; /* Maximum height */
-  }
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links li {
+  margin-left: 20px;
+}
+
+.nav-links a {
+  color: white;
+  text-decoration: none;
+  font-size: 16px;
+}
+
+.nav-links a:hover {
+  text-decoration: underline;
+}
+
+.navbar-logo {
+  width: 200px;
+  height: auto;
+  min-width: 100px;
+  min-height: 50px;
+  max-width: 300px;
+  max-height: 150px;
+}

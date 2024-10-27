@@ -46,7 +46,11 @@ function ProjectList() {
               <ProjectCard key={project.id} project={project} userRole={userRole} />
             ))}
           </div>
-          <div className="project-card-container"><ProjectCreateForm/></div>
+          {userRole !== 'site engineer' && (
+            <div className="project-card-container">
+              <ProjectCreateForm />
+            </div>
+          )}
         </>
       )}
     </div>

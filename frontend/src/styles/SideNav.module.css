@@ -1,5 +1,4 @@
 /* SideNav.module.css */
-/* SideNav.module.css */
 .sidenav {
   position: fixed;
   padding-top: 80px; /* Adjusted to align with navbar */
@@ -110,4 +109,56 @@
 .sidenav.open + .mainContent {
   margin-left: 240px;
   width: calc(100% - 240px); /* Adjust width based on sidenav */
+}
+
+/* Existing styles above */
+
+@media (max-width: 768px) {
+  /* Mobile adjustments for the sidebar */
+  .sidenav {
+    width: 0; /* Hide sidebar initially on mobile */
+    height: 100vh;
+    transition: width 0.3s ease;
+    position: fixed;
+    left: 0;
+    top: 0;
+    background-color: rgba(8, 5, 80, 0.95); /* Slight transparency for overlay effect */
+    z-index: 200;
+  }
+
+  .sidenav.open {
+    width: 240px;
+  }
+
+  /* Ensure main content takes full width */
+  .mainContent {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  /* Adjust other elements within sidenav as needed */
+  .menuItem span, .logout span {
+    display: inline;
+  }
+}
+
+@media (min-width: 769px) {
+  /* Desktop adjustments */
+  .sidenav {
+    width: 80px;
+    height: calc(100vh - 80px); /* Adjust height if needed */
+  }
+
+  .sidenav.open {
+    width: 240px;
+  }
+
+  .mainContent {
+    margin-left: 80px;
+    transition: margin-left 0.3s ease;
+  }
+
+  .sidenav.open + .mainContent {
+    margin-left: 240px;
+  }
 }
