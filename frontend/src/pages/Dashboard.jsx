@@ -306,7 +306,7 @@ const Dashboard = () => {
           <p>{totalBills.toLocaleString('en-IN')} BDT</p>
         </div>
       </div>
-
+    <div class ="chart-grid">
       <div className="chart">
         <h2>Inflow by Project</h2>
         <Bar data={inflowChartData} options={options} />
@@ -325,6 +325,7 @@ const Dashboard = () => {
       <div className="chart">
         <h2>Monthly Inflow and Outflow</h2>
         <Bar data={monthlyChartData} options={monthlyOptions} />
+      </div>
       </div>
     </div>
   );

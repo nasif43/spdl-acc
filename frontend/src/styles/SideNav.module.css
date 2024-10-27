@@ -2,9 +2,9 @@
 /* SideNav.module.css */
 .sidenav {
   position: fixed;
-  top: 60px; /* Adjusted to align with navbar */
+  padding-top: 80px; /* Adjusted to align with navbar */
   left: 0;
-  height: calc(100vh - 60px); /* Height minus navbar */
+  height: 100vh; /* Height minus navbar */
   width: 80px;
   background-color: #080550;
   color: whitesmoke;
@@ -12,7 +12,7 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  z-index: 900;
+  z-index: 100;
 }
 
 .sidenav.open {
