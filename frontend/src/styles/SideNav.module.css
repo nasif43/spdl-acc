@@ -123,7 +123,7 @@
     left: 0;
     top: 0;
     background-color: rgba(8, 5, 80, 0.95); /* Slight transparency for overlay effect */
-    z-index: 200;
+    z-index: 100;
   }
 
   .sidenav.open {
