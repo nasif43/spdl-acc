@@ -273,7 +273,7 @@ function DailyBillsCard({ project_id }) {
           </label>
           <label>
             Description:
-              <select style={{height: '2rem', gap: '10px', backgroundColor: '#080550', color: 'white' }} value={descriptionFiler} onChange={(e) => setDescriptionFilter(e.target.value)}>
+              <select style={{height: '2rem', gap: '10px', backgroundColor: '#080550', color: 'white' }} value={description} onChange={(e) => setDescription(e.target.value)}>
               <option value="">All</option>
               {BILL_DESCRIPTIONS.map((item) => (
               <option className='filter-drop-down' key={item.value} value={item.value} style={{ fontWeight: 'bold' }}>{item.label}</option>

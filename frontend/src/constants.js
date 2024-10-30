@@ -22,6 +22,7 @@ export const BILL_DESCRIPTIONS = [
   { value: "Head Welder", label: "গ্রিল মিস্ত্রি হেড (Head Welder)" },
   { value: "Lift + Generator / Substation", label: "লিফট + জেনারেটর / সাবস্টেশন (Lift + Generator / Substation)" },
   { value: "Maid Salary", label: "বুয়া বেতন (Maid Salary)" },
+  { value: "Marketing Expenses", label: "মার্কেটিং খরচ (Marketing Expenses)" },
   { value: "Mati Kata", label: "মাটি কাটা (Mati Kata)" },
   { value: "Miscellaneous", label: "বিবিধ (Miscellaneous)" },
   { value: "Paint Purchase", label: "রং ক্রয় (Paint Purchase)" },
