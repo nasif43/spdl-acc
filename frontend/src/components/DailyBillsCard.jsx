@@ -203,7 +203,7 @@ function DailyBillsCard({ project_id }) {
           <select style={{height: '2rem', gap: '10px', backgroundColor: '#080550', color: 'white' }} value={descriptionFiler} onChange={(e) => setDescriptionFilter(e.target.value)}>
             <option value="">All</option>
             {BILL_DESCRIPTIONS.map((item) => (
-              <option className='filter-drop-down' key={item.value} value={item.value} >{item.label}</option>
+              <option className='filter-drop-down' key={item.value} value={item.value} style={{ fontWeight: 'bold' }}>{item.label}</option>
             ))}
           </select>
         </label>
@@ -272,14 +272,14 @@ function DailyBillsCard({ project_id }) {
             <input type="date" value={date} onChange={(e) => setDate(e.target.value)} required />
           </label>
           <label>
-            Description (বিবরণ):
-            <select value={description} onChange={(e) => setDescription(e.target.value)} required>
-              <option value="" disabled>আইটেম বাছাই করুন</option>
+            Description:
+              <select style={{height: '2rem', gap: '10px', backgroundColor: '#080550', color: 'white' }} value={descriptionFiler} onChange={(e) => setDescriptionFilter(e.target.value)}>
+              <option value="">All</option>
               {BILL_DESCRIPTIONS.map((item) => (
-                <option key={item.value} value={item.value}>{item.label}</option>
+              <option className='filter-drop-down' key={item.value} value={item.value} style={{ fontWeight: 'bold' }}>{item.label}</option>
               ))}
-            </select>
-          </label>
+              </select>
+        </label>
           <label>
             Quantity (সংখ্যা):
             <input type="number" value={labour} onChange={(e) => setLabour(e.target.value)} />
