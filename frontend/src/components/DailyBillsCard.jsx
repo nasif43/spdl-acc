@@ -1,7 +1,7 @@
 import { h } from 'preact';
 import { useState, useEffect } from 'preact/hooks';
 import '../styles/Table.css'; // Assuming you have some basic styles for the table
-import {BILL_DESCRIPTIONS} from '../constants';
+import { BILL_DESCRIPTIONS } from '../constants';
 
 const API_URI = 'http://103.191.241.13:4000';
 
@@ -20,8 +20,9 @@ function DailyBillsCard({ project_id }) {
   // Date filter states
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
-  const[descriptionFiler, setDescriptionFilter] = useState('');
-  const [editId, setEditId] = useState(null); // For editing
+  const [descriptionFiler, setDescriptionFilter] = useState('');
+  const [noteFilter, setNoteFilter] = useState(''); // Add state for note filter
+  const [editId, setEditId] = useState(null);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   // Total bill amount
@@ -29,7 +30,7 @@ function DailyBillsCard({ project_id }) {
   const [totalPaid, setTotalPaid] = useState(0);
   const [totalDue, setTotalDue] = useState(0);
   const [userRole, setUserRole] = useState('');
-  // Calculate total bill, paid, and due
+
   useEffect(() => {
     setUserRole(localStorage.getItem('userRole') || '');
     const totalBillAmount = bills.reduce((total, bill) => total + bill.due, 0);
@@ -58,16 +59,17 @@ function DailyBillsCard({ project_id }) {
         return response.json();
       })
       .then(data => {
-        // Apply client-side filtering based on date range
+        // Apply client-side filtering based on date range and note filter
         const filteredData = data.filter(bill => {
           const billDate = new Date(bill.date);
           const isAfterStartDate = startDate ? billDate >= new Date(startDate) : true;
           const isBeforeEndDate = endDate ? billDate <= new Date(endDate) : true;
           const isDescriptionMatch = descriptionFiler ? bill.description.toLowerCase().includes(descriptionFiler.toLowerCase()) : true;
-          return isAfterStartDate && isBeforeEndDate && isDescriptionMatch;
+          const isNoteMatch = noteFilter ? bill.note.toLowerCase().includes(noteFilter.toLowerCase()) : true; // New note filter condition
+          return isAfterStartDate && isBeforeEndDate && isDescriptionMatch && isNoteMatch;
         });
         const sortedData = filteredData.sort((a, b) => new Date(a.date) - new Date(b.date));
-        setBills(sortedData); // Set the filtered bills
+        setBills(sortedData);
         setLoading(false);
         setShowTable(true);
         setShowForm(false);
@@ -206,6 +208,10 @@ function DailyBillsCard({ project_id }) {
               <option className='filter-drop-down' key={item.value} value={item.value} style={{ fontWeight: 'bold' }}>{item.label}</option>
             ))}
           </select>
+        </label>
+        <label>
+          Note Search:
+          <input type="text" value={noteFilter} onChange={(e) => setNoteFilter(e.target.value)} placeholder="Search by note content" />
         </label>
         <button onClick={fetchBills}>Filter Bills</button>
       </div>
