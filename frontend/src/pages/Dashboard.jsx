@@ -316,6 +316,7 @@ const Dashboard = () => {
         <h2>Outflow by Project</h2>
         <Bar data={outflowChartData} options={options} />
       </div>
+    </div>
 
       <div className="chart">
         <h2>Daily Bills</h2>
@@ -327,7 +328,6 @@ const Dashboard = () => {
         <Bar data={monthlyChartData} options={monthlyOptions} />
       </div>
       </div>
-    </div>
   );
 };
 
