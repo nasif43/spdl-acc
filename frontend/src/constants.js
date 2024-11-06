@@ -56,5 +56,7 @@ export const BILL_DESCRIPTIONS = [
   { value: "Tiles Purchase", label: "53. টাইলস ক্রয় (Tiles Purchase)" },
   { value: "Utility", label: "54. ইউটিলিটি (Utility)" },
   { value: "VAT & TAX", label: "55. ভ্যাট এন্ড ট্যাক্স (VAT & TAX)" },
-  { value: "Welder's Helper", label: "56. গ্রিল মিস্ত্রি সহকারী (Welder's Helper)" }
+  { value: "Welder's Helper", label: "56. গ্রিল মিস্ত্রি সহকারী (Welder's Helper)" },
+  { value: "MD Sir Personal Cost", label: "57. এমডি স্যার ব্যক্তিগত খরচ (MD Sir Personal Cost)" },
+  { value: "R.T Deposit", label: "58. আর টি ডিপোজিট (R.T Deposit)" },
 ];
