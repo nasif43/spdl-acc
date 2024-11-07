@@ -249,9 +249,9 @@ function DailyBillsCard({ project_id }) {
                     <td>{new Date(bill.date).toLocaleDateString('en-GB')}</td>
                     <td>{bill.description}</td>
                     <td>{bill.labour}</td>
-                    <td>{bill.due}</td>
-                    <td>{bill.paid}</td>
-                    <td>{bill.due - bill.paid}</td>
+                    <td>{(bill.due).toLocaleString('en-IN')}</td>
+                    <td>{(bill.paid).toLocaleString('en-IN')}</td>
+                    <td>{(bill.due - bill.paid).toLocaleString('en-IN')}</td>
                     <td>{bill.note}</td>
                     <td className="actions-column" style={{maxWidth: '15px'}}>
                       <button onClick={() => handleEditBill(bill)}>Edit </button>
@@ -261,9 +261,9 @@ function DailyBillsCard({ project_id }) {
                 ))}
                 <tr>
                   <td colSpan={3}> Total </td>
-                  <td style={{ fontWeight: 'bold' }}>{totalBill}</td>
-                  <td style={{fontWeight: 'bold'}}>{totalPaid}</td>
-                  <td style={{fontWeight:'bold'}}>{totalDue}</td>
+                  <td style={{ fontWeight: 'bold' }}>{(totalBill).toLocaleString('en-IN')}</td>
+                  <td style={{fontWeight: 'bold'}}>{(totalPaid).toLocaleString('en-IN')}</td>
+                  <td style={{fontWeight:'bold'}}>{(totalDue).toLocaleString('en-IN')}</td>
                 </tr>
               </>
             )}

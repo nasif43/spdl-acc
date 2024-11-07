@@ -229,9 +229,17 @@ const ProjectDetail = ({ id }) => {
             .catch(error => console.error('Error fetching units:', error));
     };
 
+    const totalSettledAmount = units.reduce((sum, unit) => sum + unit.amount, 0);
+    const totalInstalmentAmount = units.reduce((sum, unit) => sum + unit.paid, 0);
+    const totalDueAmount = units.reduce((sum, unit) => sum + (dueAmounts[unit.id] || 0), 0);
+
     if (loading) {
         return <div>Loading...</div>;
     }
+
+    const formatCurrency = (amount) => {
+        return amount.toLocaleString('en-IN');
+    };
 
     return (
         <div>
@@ -263,9 +271,9 @@ const ProjectDetail = ({ id }) => {
                                 <td>{unit.client_name}</td>
                                 <td>{unit.client_number}</td>
                                 <td>{unit.client_nid}</td>
-                                <td>{unit.amount}</td>
-                                <td style={{minWidth:'10px'}}>{unit.paid}</td>
-                                <td>{dueAmounts[unit.id] !== undefined ? dueAmounts[unit.id] : 'Calculating...'}</td> {/* Due amount */}
+                                <td>{formatCurrency(unit.amount)}</td>
+                                <td style={{minWidth:'10px'}}>{formatCurrency(unit.paid)}</td>
+                                <td>{dueAmounts[unit.id] !== undefined ? formatCurrency(dueAmounts[unit.id]) : 'Calculating...'}</td> {/* Due amount */}
                                 <td className='actions-column'>
                                     <button>
                                         <Link href={`/payment_history/${id}/${unit.id}`} style={{ color: 'white' }}>
@@ -279,6 +287,13 @@ const ProjectDetail = ({ id }) => {
                             </tr>
                         ))
                     )}
+                    <tr>
+                        <td colSpan="5"><strong>Total</strong></td>
+                        <td><strong>{formatCurrency(totalSettledAmount)}</strong></td>
+                        <td><strong>{formatCurrency(totalInstalmentAmount)}</strong></td>
+                        <td><strong>{formatCurrency(totalDueAmount)}</strong></td>
+                        <td></td>
+                    </tr>
                     <tr>
                         <td colSpan="9">
                             <button onClick={handleAddUnitClick}>Add More</button>
