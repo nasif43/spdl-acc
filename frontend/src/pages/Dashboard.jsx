@@ -10,7 +10,7 @@ const Dashboard = () => {
   const [outflow, setOutflow] = useState(0);
   const [standing, setStanding] = useState(0);
   const [totalBills, setTotalBills] = useState(0);
-  const [selectedProject, setSelectedProject] = useState('');
+  const [selectedProjects, setSelectedProjects] = useState([]);
   const [selectedDateRange, setSelectedDateRange] = useState([null, null]);
   const [userRole, setUserRole] = useState('');
 
@@ -35,8 +35,8 @@ const Dashboard = () => {
   const applyFilters = () => {
     let filtered = [...projects];
 
-    if (selectedProject) {
-      filtered = filtered.filter((project) => project.id === selectedProject);
+    if (selectedProjects.length > 0) {
+      filtered = filtered.filter((project) => selectedProjects.includes(project.id.toString()));
     }
 
     if (selectedDateRange[0] && selectedDateRange[1]) {
@@ -76,7 +76,14 @@ const Dashboard = () => {
   };
 
   const handleProjectChange = (e) => {
-    setSelectedProject(e.target.value);
+    const options = e.target.options;
+    const selectedValues = [];
+    for (let i = 0; i < options.length; i++) {
+      if (options[i].selected) {
+        selectedValues.push(options[i].value);
+      }
+    }
+    setSelectedProjects(selectedValues);
   };
 
   const handleDateRangeChange = (e, index) => {
@@ -89,7 +96,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     applyFilters();
-  }, [selectedProject, selectedDateRange]);
+  }, [selectedProjects, selectedDateRange]);
 
   const aggregateDailyBills = () => {
     const billMap = new Map();
@@ -223,11 +230,13 @@ const Dashboard = () => {
       });
     });
 
-    return Object.entries(monthlyData).map(([monthYear, { inflow, outflow }]) => ({
-      monthYear,
-      inflow,
-      outflow,
-    }));
+    return Object.entries(monthlyData)
+      .sort(([a], [b]) => new Date(a) - new Date(b)) // Sort dates in ascending order
+      .map(([monthYear, { inflow, outflow }]) => ({
+        monthYear,
+        inflow,
+        outflow,
+      }));
   };
 
   const monthlyData = monthlyInflowOutflowData();
@@ -287,7 +296,27 @@ const Dashboard = () => {
   return (
     <div>
       <h1>Dashboard</h1>
-
+  
+      <div className="filters">
+        <label>
+          Select Project:
+          <select
+            multiple
+            value={selectedProjects}
+            onChange={handleProjectChange}
+            style={{ height: '100px' }}
+            size={projects.length} // This will display all options without needing to scroll
+          >
+            {projects.map((project) => (
+              <option key={project.id} value={project.id}>
+                {project.name}
+              </option>
+            ))}
+          </select>
+        </label>
+        <button onClick={() => setSelectedProjects([])}>Clear Selection</button>
+      </div>
+  
       <div className="cards">
         <div className="card">
           <h2>Inflow</h2>
@@ -306,29 +335,30 @@ const Dashboard = () => {
           <p>{totalBills.toLocaleString('en-IN')} BDT</p>
         </div>
       </div>
-    <div class ="chart-grid">
-      <div className="chart">
-        <h2>Inflow by Project</h2>
-        <Bar data={inflowChartData} options={options} />
+  
+      <div className="chart-grid">
+        <div className="chart">
+          <h2>Inflow by Project</h2>
+          <Bar data={inflowChartData} options={options} />
+        </div>
+  
+        <div className="chart">
+          <h2>Outflow by Project</h2>
+          <Bar data={outflowChartData} options={options} />
+        </div>
       </div>
-
-      <div className="chart">
-        <h2>Outflow by Project</h2>
-        <Bar data={outflowChartData} options={options} />
+        <div className="chart">
+          <h2>Daily Bills</h2>
+          <Bar data={dailyBillsChartData} options={options} />
+        </div>
+  
+        <div className="chart">
+          <h2>Monthly Inflow and Outflow</h2>
+          <Bar data={monthlyChartData} options={monthlyOptions} />
+        </div>
       </div>
-    </div>
-
-      <div className="chart">
-        <h2>Daily Bills</h2>
-        <Bar data={dailyBillsChartData} options={options} />
-      </div>
-
-      <div className="chart">
-        <h2>Monthly Inflow and Outflow</h2>
-        <Bar data={monthlyChartData} options={monthlyOptions} />
-      </div>
-      </div>
+    
   );
-};
+}
 
 export default Dashboard;
