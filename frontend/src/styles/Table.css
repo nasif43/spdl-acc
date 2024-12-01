@@ -99,8 +99,12 @@ tr:nth-child(odd) {
     background-color: #fff; /* White color for odd rows */
 }
 
+table tr:last-child {
+    background-color: #080550;
+    color: white;
+}
 /* Table footer styles */
-tfoot td {
+tfoot tr {
     font-weight: bold;
 }
 

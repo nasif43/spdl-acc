@@ -1,5 +1,9 @@
 /* App.module.css */
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Text:ital@0;1&family=Geist+Mono:wght@100..900&display=swap');
 
+body {
+  font-family: "DM Serif Text", serif;
+}
 .container {
   display: flex;
   flex-direction: column;
