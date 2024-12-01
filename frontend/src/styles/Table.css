@@ -100,7 +100,7 @@ tr:nth-child(odd) {
 }
 
 table tr:last-child {
-    background-color: #080550;
+    background-color: #7e7e7e;
     color: white;
 }
 /* Table footer styles */
@@ -218,6 +218,29 @@ button:hover {
 }
 
 @media print {
+    body {
+        margin: 0;
+        padding: 0;
+        position: relative;
+    }
+
+    body::after {
+        content: "";
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 50%; /* Adjust the size of the watermark */
+        height: 50%; /* Adjust the size of the watermark */
+        background-image: url('../assets/logo.png'); /* Replace with your logo path */
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
+        opacity: 0.1; /* Adjust the opacity of the watermark */
+        z-index: 1; /* Place it behind the content */
+        pointer-events: none; /* Prevent it from interfering with interactions */
+    }
+
     button {
       display: none;
     }
@@ -229,11 +252,7 @@ button:hover {
     .date {
         margin: none;
     }
-    
-    body {
-        margin: 0;
-        padding: 0;
-    }
+
     .navbar {
         padding: 0;
         margin: 0;

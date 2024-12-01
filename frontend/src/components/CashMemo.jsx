@@ -8,7 +8,7 @@ const CashMemo = ({ date, clientName, projectName, unit, paymentMethod, amount, 
       </div>
       <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px' }}>
         <div>
-          <p>Sarker Properties & Developments Ltd.</p>
+          <p><strong>Sarker Properties & Developments Ltd.</strong></p>
           <p>41, UTTARA GARIB E NAWAZ AVENUE, Dhaka, Bangladesh</p>
           <p>01911997721</p>
           <p>info@sarkerpropertiesltd.com</p>
@@ -22,23 +22,23 @@ const CashMemo = ({ date, clientName, projectName, unit, paymentMethod, amount, 
         <table style={{ width: '100%', borderCollapse: 'collapse' }}>
           <tbody>
             <tr>
-              <td>Name</td>
+              <td><strong>Name</strong></td>
               <td> {clientName}</td>
             </tr>
             <tr>
-              <td>Project Name</td>
+              <td><strong>Project Name</strong></td>
               <td> {projectName}</td>
             </tr>
             <tr>
-              <td>Unit Description</td>
+              <td><strong>Unit Description</strong></td>
               <td> {unit}</td>
             </tr>
             <tr>
-              <td>By Cash / Cheque No</td>
+              <td><strong>By Cash / Cheque No</strong></td>
               <td> {paymentMethod}</td>
             </tr>
-            <tr style={{ maxHeight: '40px', overflow: 'hidden' }}>
-              <td>P.O/TID NO</td>
+            <tr style={{ backgroundColor:'white', color:'black',maxHeight: '40px', overflow: 'hidden' }}>
+              <td><strong>P.O/TID NO</strong></td>
               <td><input type="text" name="poTidNo" style={{ maxHeight: '30px' }} /></td>
             </tr>
           </tbody>
@@ -48,8 +48,8 @@ const CashMemo = ({ date, clientName, projectName, unit, paymentMethod, amount, 
         <table style={{ width: '100%', borderCollapse: 'collapse', border: '1px solid black' }}>
           <thead>
             <tr>
-              <th style={{ border: '1px solid black', padding: '8px' }}>DESCRIPTION</th>
-              <th style={{ border: '1px solid black', padding: '8px' }}>AMOUNT</th>
+              <th style={{ border: '1px solid black', padding: '8px' }}><strong>DESCRIPTION</strong></th>
+              <th style={{ border: '1px solid black', padding: '8px' }}><strong>AMOUNT</strong></th>
             </tr>
           </thead>
           <tbody>
@@ -58,8 +58,8 @@ const CashMemo = ({ date, clientName, projectName, unit, paymentMethod, amount, 
               <td style={{ border: '1px solid black', padding: '8px' }}><strong>{amount}</strong></td>
             </tr>
             <tr>
-              <td style={{ border: '1px solid black', padding: '8px' }}><strong>In Word</strong></td>
-              <td style={{ border: '1px solid black', padding: '8px' }}>{amountInWords} Taka Only</td>
+              <td style={{ backgroundColor: 'white', color: 'black', border: '1px solid black', padding: '8px' }}><strong>In Word</strong></td>
+              <td style={{ backgroundColor: 'white', color: 'black', border: '1px solid black', padding: '8px' }}><strong>{amountInWords} Taka Only</strong></td>
             </tr>
           </tbody>
         </table>
@@ -67,19 +67,19 @@ const CashMemo = ({ date, clientName, projectName, unit, paymentMethod, amount, 
       <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '40px' }}>
         <div style={{ flex: '1', textAlign: 'center' }}>
           <hr style={{ width: '200px', marginBottom: '5px' }} />
-          <p>Client Signature</p>
+          <p><strong>Client Signature</strong></p>
         </div>
         <div style={{ flex: '1', textAlign: 'center' }}>
           <hr style={{ width: '200px', marginBottom: '5px' }} />
-          <p>Accounts Signature</p>
+          <p><strong>Accounts Signature</strong></p>
         </div>
         <div style={{ flex: '1', textAlign: 'center' }}>
           <hr style={{ width: '200px', marginBottom: '5px' }} />
-          <p>SPDL Management</p>
+          <p><strong>SPDL Management</strong></p>
         </div>
       </div>
       <div style={{ textAlign: 'center', marginTop: '40px' }}>
-        <p>Received with thanks from Sarker Properties & Developments Ltd</p>
+        <p>Received with thanks from <strong>Sarker Properties & Developments Ltd</strong></p>
         <h3>THANK YOU</h3>
       </div>
       <footer style={{ textAlign: 'center', marginTop: '20px', fontSize: '12px', borderTop: '1px solid #ccc', paddingTop: '10px' }}>
