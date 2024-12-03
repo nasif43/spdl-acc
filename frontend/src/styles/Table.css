@@ -224,7 +224,7 @@ button:hover {
         position: relative;
     }
 
-    body::after {
+    table::after {
         content: "";
         position: fixed;
         top: 48%;
@@ -242,11 +242,11 @@ button:hover {
     }
 
     button {
-      display: none;
+        display: none;
     }
     
     .actions-column {
-      display: none;
+        display: none;
     }
 
     .date {
