@@ -13,7 +13,7 @@ import Dashboard from './pages/Dashboard';
 import styles from './styles/App.module.css';
 
 function App() {
-  const [isSidebarOpen, setSidebarOpen] = useState(true);
+  const [isSidebarOpen, setSidebarOpen] = useState(false);
 
   const toggleSidebar = () => setSidebarOpen((prev) => !prev);
 

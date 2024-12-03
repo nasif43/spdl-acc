@@ -227,7 +227,7 @@ button:hover {
     body::after {
         content: "";
         position: fixed;
-        top: 50%;
+        top: 60%;
         left: 50%;
         transform: translate(-50%, -50%);
         width: 50%; /* Adjust the size of the watermark */
@@ -237,7 +237,7 @@ button:hover {
         background-position: center;
         background-size: contain;
         opacity: 0.1; /* Adjust the opacity of the watermark */
-        z-index: 1; /* Place it behind the content */
+        z-index: 1;
         pointer-events: none; /* Prevent it from interfering with interactions */
     }
 
