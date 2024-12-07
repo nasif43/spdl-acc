@@ -10,9 +10,11 @@ const Dashboard = () => {
   const [outflow, setOutflow] = useState(0);
   const [standing, setStanding] = useState(0);
   const [totalBills, setTotalBills] = useState(0);
-  const [selectedProjects, setSelectedProjects] = useState([]);
+  const [selectedProjects, setSelectedProjects] = useState([0, 1, 2, 3, 7]); // Default selected projects
+  const [selectedProjectNames, setSelectedProjectNames] = useState(["Sarkar Siraj Dream", "Sarker Spire", "Sarker Afroza Heights", "Sarker Avalon", "New Proposed"]);
   const [selectedDateRange, setSelectedDateRange] = useState([null, null]);
   const [userRole, setUserRole] = useState('');
+  const [projectsLoaded, setProjectsLoaded] = useState(false);
 
   useEffect(() => {
     setUserRole(localStorage.getItem('userRole') || '');
@@ -29,15 +31,19 @@ const Dashboard = () => {
         setProjects(data);
         setFilteredProjects(data);
         calculateMetrics(data);
+        setProjectsLoaded(true);
       });
   }, []);
 
   const applyFilters = () => {
-    let filtered = [...projects];
-
+    let filtered = projects;
     if (selectedProjects.length > 0) {
-      filtered = filtered.filter((project) => selectedProjects.includes(project.id.toString()));
-    }
+      filtered = filtered.filter((project) => {
+        return selectedProjects.includes(project.id);
+      });
+}
+  setFilteredProjects(filtered);
+  calculateMetrics(filtered);
 
     if (selectedDateRange[0] && selectedDateRange[1]) {
       const [startDate, endDate] = selectedDateRange;
@@ -78,12 +84,15 @@ const Dashboard = () => {
   const handleProjectChange = (e) => {
     const options = e.target.options;
     const selectedValues = [];
+    const selectedNames = [];
     for (let i = 0; i < options.length; i++) {
       if (options[i].selected) {
         selectedValues.push(options[i].value);
+        selectedNames.push(options[i].text);
       }
     }
     setSelectedProjects(selectedValues);
+    setSelectedProjectNames(selectedNames);
   };
 
   const handleDateRangeChange = (e, index) => {
@@ -95,8 +104,10 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    applyFilters();
-  }, [selectedProjects, selectedDateRange]);
+    if (projectsLoaded) {
+      applyFilters();
+    }
+  }, [selectedProjects, selectedDateRange, projectsLoaded]);
 
   const aggregateDailyBills = () => {
     const billMap = new Map();
@@ -206,7 +217,6 @@ const Dashboard = () => {
     ],
   };
 
-  // Monthly inflow/outflow data
   const monthlyInflowOutflowData = () => {
     const monthlyData = {};
     
@@ -296,7 +306,7 @@ const Dashboard = () => {
   return (
     <div>
       <h1>Dashboard</h1>
-  
+
       <div className="filters">
         <label>
           Select Project:
@@ -314,9 +324,13 @@ const Dashboard = () => {
             ))}
           </select>
         </label>
-        <button onClick={() => setSelectedProjects([])}>Clear Selection</button>
+        <button onClick={() => {setSelectedProjects([]); selectedProjectNames([])}}>Clear Selection</button>
+        <label>
+        <h3>Selected Projects:</h3>
+        <p>{selectedProjectNames.length > 0 ? selectedProjectNames.join(', ') : 'None'}</p>
+        </label>
       </div>
-  
+
       <div className="cards">
         <div className="card">
           <h2>Inflow</h2>
@@ -335,29 +349,28 @@ const Dashboard = () => {
           <p>{totalBills.toLocaleString('en-IN')} BDT</p>
         </div>
       </div>
-  
+
       <div className="chart-grid">
         <div className="chart">
           <h2>Inflow by Project</h2>
           <Bar data={inflowChartData} options={options} />
         </div>
-  
+
         <div className="chart">
           <h2>Outflow by Project</h2>
           <Bar data={outflowChartData} options={options} />
         </div>
       </div>
-        <div className="chart">
-          <h2>Daily Bills</h2>
-          <Bar data={dailyBillsChartData} options={options} />
-        </div>
-  
-        <div className="chart">
-          <h2>Monthly Inflow and Outflow</h2>
-          <Bar data={monthlyChartData} options={monthlyOptions} />
-        </div>
+      <div className="chart">
+        <h2>Daily Bills</h2>
+        <Bar data={dailyBillsChartData} options={options} />
       </div>
-    
+
+      <div className="chart">
+        <h2>Monthly Inflow and Outflow</h2>
+        <Bar data={monthlyChartData} options={monthlyOptions} />
+      </div>
+    </div>
   );
 }
 
