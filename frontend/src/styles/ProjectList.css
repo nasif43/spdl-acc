@@ -1,7 +1,8 @@
 /* Project List Styles */
 .project-list {
-    padding: 20px;
-    background: url('../assets/bg-home.jpg');
+    padding: 10px;
+    background: url('../assets/bg-home.jpg') no-repeat center right;
+    background-size: cover; /* Ensures the image covers the entire element */
     min-height: 100vh;
 }
 
@@ -36,7 +37,7 @@
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Slightly larger shadow for depth */
     transition: transform 0.2s, box-shadow 0.2s; /* Added shadow transition */
     cursor: pointer;
-    flex: 1 1 calc(30% - 20px); /* Default card width for larger screens */
+    flex: 1 1 calc(20% - 10px); /* Default card width for larger screens */
 }
 
 .project-card:hover {

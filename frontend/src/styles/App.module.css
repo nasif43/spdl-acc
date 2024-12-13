@@ -12,7 +12,7 @@ body {
 
 .mainContentContainer {
   display: flex;
-  flex: 1;
+  flex: 1 1;
 }
 
 .mainContent {
