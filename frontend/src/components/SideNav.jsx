@@ -1,12 +1,13 @@
 import { h } from 'preact'; 
 import { useState, useEffect } from 'preact/hooks';
 import { Link } from 'preact-router';
-import { LogOut, LucideLayoutDashboard, GaugeCircle } from 'lucide-preact';
+import { LogOut, LucideLayoutDashboard, GaugeCircle, Package } from 'lucide-preact';
 import styles from '../styles/SideNav.module.css';
 
 const menuItems = [
   { icon: GaugeCircle, text: 'Dashboard', href: '/dashboard' },
   { icon: LucideLayoutDashboard, text: 'All Projects', href: '/' },
+  { icon: Package, text: 'Inventory', href: '/inventory' }, // Added inventory menu item
 ];
 
 const handleLogout = () => {

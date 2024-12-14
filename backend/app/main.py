@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
-from app.routes import users, daily_billings, projects, payment_history, units
+from app.routes import users, daily_billings, projects, payment_history, units, inventory
 from app.routes.token import router as token_router 
 app = FastAPI()
 
@@ -27,6 +27,7 @@ app.include_router(projects.router)
 app.include_router(token_router)
 app.include_router(units.router)
 app.include_router(users.router)
+app.include_router(inventory.router)
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)

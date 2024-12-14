@@ -61,3 +61,28 @@ export const BILL_DESCRIPTIONS = [
   { value: "MD Sir Personal Cost", label: "58. এমডি স্যার ব্যক্তিগত খরচ (MD Sir Personal Cost)" },
   { value: "R.T Deposit", label: "59. আর টি ডিপোজিট (R.T Deposit)" },
 ];
+
+export const INVENTORY_ITEMS = [
+  { value: "Tiles", label: "1. টাইলস (Tiles)" },
+  { value: "Ms Bar", label: "2. এমএস বার (Ms Bar)" },
+  { value: "Colouring materials", label: "3. রং করার উপকরণ (Colouring materials)" },
+  { value: "Sanitary fittings Materials", label: "4. স্যানিটারি ফিটিংস উপকরণ (Sanitary fittings Materials)" },
+  { value: "Kitchen Materials", label: "5. রান্নাঘরের উপকরণ (Kitchen Materials)" },
+  { value: "Electrical fittings Materials", label: "6. বৈদ্যুতিক ফিটিংস উপকরণ (Electrical fittings Materials)" },
+  { value: "Cable", label: "7. কেবল (Cable)" },
+  { value: "Rod", label: "8. রড (Rod)" },
+  { value: "Cement", label: "9. সিমেন্ট (Cement)" },
+  { value: "Door", label: "10. দরজা (Door)" },
+  { value: "Chwkath", label: "11. চৌকাঠ (Chwkath)" },
+  { value: "Lock & kobja", label: "12. তালা ও কবজা (Lock & kobja)" },
+  { value: "Switch & socket", label: "13. সুইচ ও সকেট (Switch & socket)" },
+  { value: "Catdoor", label: "14. ক্যাটডোর (Catdoor)" },
+  { value: "Balcony grill", label: "15. বারান্দার গ্রিল (Balcony grill)" },
+  { value: "Window grill", label: "16. জানালার গ্রিল (Window grill)" },
+  { value: "Local sand", label: "17. স্থানীয় বালি (Local sand)" },
+  { value: "Sylhet sand", label: "18. সিলেট বালি (Sylhet sand)" },
+  { value: "Stone", label: "19. পাথর (Stone)" },
+  { value: "Pipe fittings", label: "20. পাইপ ফিটিংস (Pipe fittings)" },
+  { value: "Thai glass", label: "21. থাই গ্লাস (Thai glass)" },
+  { value: "Bricks", label: "22. ইট (Bricks)" }
+];

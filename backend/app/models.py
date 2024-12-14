@@ -15,7 +15,8 @@ class Project(Base):
     units = relationship('Unit', back_populates='project')
     payments = relationship('PaymentHistory', back_populates='project')
     daily_billings = relationship('DailyBilling', back_populates='project')
-
+    inventory = relationship('Inventory', back_populates='project')
+    
 class Unit(Base):
     __tablename__ = 'units'
 
@@ -77,3 +78,12 @@ class User(Base):
     # Relationship back to daily billings
     daily_billings = relationship("DailyBilling", back_populates="user")  # Linking to 'user', not 'user_id'
 
+class Inventory(Base):
+    __tablename__ = 'inventory'
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    project_id = Column(Integer, ForeignKey('projects.id'))
+    item_name = Column(String, nullable=False)
+    quantity = Column(Integer, nullable=True)
+    quantity_used = Column(Integer, nullable=True)
+
+    project = relationship('Project', back_populates='inventory')

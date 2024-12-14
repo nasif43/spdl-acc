@@ -148,3 +148,24 @@ class UserUpdate(BaseModel):
 
     class Config:
         from_attributes = True
+
+class Inventory(BaseModel):
+    id: Optional[int] = None
+    project_id: int
+    item_name: str
+    quantity: int
+    quantity_used: int
+
+    class Config:
+        from_attributes = True
+
+class InventoryCreate(Inventory):
+    pass
+
+class InventoryUpdate(BaseModel):
+    item_name: Optional[str] = None
+    quantity: Optional[int] = None
+    quantity_used: Optional[int] = None
+
+    class Config:
+        from_attributes = True

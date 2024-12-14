@@ -194,3 +194,33 @@ def delete_user(db: Session, user_id: int):
         db.delete(db_user)
         db.commit()
     return db_user
+
+def read_inventory(db: Session, skip: int = 0, limit: int = 10):
+    return db.query(models.Inventory).offset(skip).limit(limit).all()
+
+def create_inventory(db: Session, inventory: schemas.InventoryCreate):
+    db_inventory = models.Inventory(**inventory.dict())
+    db.add(db_inventory)
+    db.commit()
+    db.refresh(db_inventory)
+    return db_inventory
+
+def read_inventory_item(db: Session, inventory_id: int):
+    return db.query(models.Inventory).filter(models.Inventory.id == inventory_id).first()
+
+def update_inventory(db: Session, inventory_id: int, inventory: schemas.InventoryUpdate):
+    db_inventory = db.query(models.Inventory).filter(models.Inventory.id == inventory_id).first()
+    if db_inventory:
+        for key, value in inventory.dict(exclude_unset=True).items():
+            setattr(db_inventory, key, value)
+        db.commit()
+        db.refresh(db_inventory)
+    return db_inventory
+
+def delete_inventory(db: Session, inventory_id: int):
+    db_inventory = db.query(models.Inventory).filter(models.Inventory.id == inventory_id).first()
+    if db_inventory:
+        db.delete(db_inventory)
+        db.commit()
+    return db_inventory
+
