@@ -9,6 +9,7 @@ function InventoryCard({ project_id }) {
     const [inventoryItems, setInventoryItems] = useState([]);
     const [showForm, setShowForm] = useState(false);
     const [showTable, setShowTable] = useState(false);
+    const [date, setDate] = useState('');
     const [itemName, setItemName] = useState('');
     const [quantity, setQuantity] = useState(0);
     const [quantityUsed, setQuantityUsed] = useState(0);
@@ -16,6 +17,10 @@ function InventoryCard({ project_id }) {
     const [editId, setEditId] = useState(null);
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
+    const [startDate, setStartDate] = useState('');
+    const [endDate, setEndDate] = useState('');
+    const [itemNameFilter, setItemNameFilter] = useState('');
+    const [notesFilter, setNotesFilter] = useState('');
 
     useEffect(() => {
         fetchInventory();
@@ -37,7 +42,15 @@ function InventoryCard({ project_id }) {
                 return response.json();
             })
             .then(data => {
-                setInventoryItems(data);
+                const filteredData = data.filter(item => {
+                    const itemDate = new Date(item.date);
+                    const isAfterStartDate = startDate ? itemDate >= new Date(startDate) : true;
+                    const isBeforeEndDate = endDate ? itemDate <= new Date(endDate) : true;
+                    const isItemNameMatch = itemNameFilter ? item.item_name.toLowerCase().includes(itemNameFilter.toLowerCase()) : true;
+                    const isNotesMatch = notesFilter ? item.notes.toLowerCase().includes(notesFilter.toLowerCase()) : true;
+                    return isAfterStartDate && isBeforeEndDate && isItemNameMatch && isNotesMatch;
+                });
+                setInventoryItems(filteredData);
                 setLoading(false);
                 setShowTable(true);
                 setShowForm(false);
@@ -54,6 +67,7 @@ function InventoryCard({ project_id }) {
         const inventoryData = {
             project_id: parseInt(project_id),
             item_name: itemName,
+            date: new Date().toISOString(),
             quantity: parseInt(quantity),
             quantity_used: parseInt(quantityUsed),
             notes: notes,
@@ -125,6 +139,7 @@ function InventoryCard({ project_id }) {
     const handleEditInventory = (item) => {
         setEditId(item.id);
         setItemName(item.item_name);
+        setDate(item.date);
         setQuantity(item.quantity);
         setQuantityUsed(item.quantity_used);
         setNotes(item.notes);
@@ -135,6 +150,7 @@ function InventoryCard({ project_id }) {
     const resetForm = () => {
         setEditId(null);
         setItemName('');
+        setDate('');
         setQuantity(0);
         setQuantityUsed(0);
         setNotes('');
@@ -149,6 +165,27 @@ function InventoryCard({ project_id }) {
 
     return (
         <div style={{ padding: '10px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+            <div className="start-and-end-dates" style={{ display: 'flex', gap: '10px' }}>
+                <label>
+                    Start Date:
+                    <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
+                </label>
+                <label>
+                    End Date:
+                    <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
+                </label>
+            </div>
+            <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+                <label>
+                    Item Name:
+                    <input type="text" value={itemNameFilter} onChange={(e) => setItemNameFilter(e.target.value)} placeholder="Search by item name" />
+                </label>
+                <label>
+                    Notes:
+                    <input type="text" value={notesFilter} onChange={(e) => setNotesFilter(e.target.value)} placeholder="Search by notes" />
+                </label>
+                <button onClick={fetchInventory}>Filter Inventory</button>
+            </div>
             <div style={{ display: 'flex', gap: '10px' }}>
                 <button onClick={() => { setShowForm(false); setShowTable(true); fetchInventory(); }}>View Inventory</button>
                 <button onClick={() => { resetForm(); setShowForm(true); setShowTable(false); }}>Add Inventory</button>
@@ -161,12 +198,13 @@ function InventoryCard({ project_id }) {
                 <table>
                     <thead>
                         <tr>
-                            <th>Item Name</th>
-                            <th>Quantity</th>
-                            <th>Quantity Used</th>
-                            <th>Quantity Remaining</th>
-                            <th>Notes</th>
-                            <th>Actions</th>
+                            <th style={{maxWidth: '10px'}}>Date</th>
+                            <th style={{maxWidth: '55px'}}>Item Name</th>
+                            <th style={{maxWidth: '10px'}}>Quantity</th>
+                            <th style={{maxWidth: '10px'}}>Quantity Used</th>
+                            <th style={{maxWidth: '20px'}}>Quantity Remaining</th>
+                            <th style={{minWidth: '200px'}}>Notes</th>
+                            <th style={{maxWidth: '10px'}}>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -177,6 +215,7 @@ function InventoryCard({ project_id }) {
                         ) : (
                             inventoryItems.map(item => (
                                 <tr key={item.id}>
+                                    <td>{new Date(item.date).toLocaleDateString('en-GB')}</td>
                                     <td>{item.item_name}</td>
                                     <td>{item.quantity}</td>
                                     <td>{item.quantity_used}</td>
@@ -191,7 +230,7 @@ function InventoryCard({ project_id }) {
                         )}
                         {inventoryItems.length > 0 && (
                             <tr>
-                                <td><strong>Total</strong></td>
+                                <td colSpan={2}><strong>Total</strong></td>
                                 <td><strong>{totalQuantity}</strong></td>
                                 <td><strong>{totalQuantityUsed}</strong></td>
                                 <td><strong>{totalQuantityRemaining}</strong></td>
@@ -205,13 +244,17 @@ function InventoryCard({ project_id }) {
             {showForm && (
                 <form onSubmit={handleAddOrUpdateInventory} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                     <label>
+                        Date:
+                        <input type="date" value={date} onChange={(e) => setDate(e.target.value)} />
+                    </label>
+                    <label>
                         Item Name:
                         <select style={{height: '2rem', gap: '10px', backgroundColor: '#080550', color: 'white' }} value={itemName} onChange={(e) => setItemName(e.target.value)}>
-                                      <option value="">All</option>
-                                      {INVENTORY_ITEMS.map((item) => (
-                                      <option className='filter-drop-down' key={item.value} value={item.value} style={{ fontWeight: 'bold' }}>{item.label}</option>
-                                      ))}
-                                      </select>
+                            <option value="">All</option>
+                            {INVENTORY_ITEMS.map((item) => (
+                                <option className='filter-drop-down' key={item.value} value={item.value} style={{ fontWeight: 'bold' }}>{item.label}</option>
+                            ))}
+                        </select>
                     </label>
                     <label>
                         Quantity:

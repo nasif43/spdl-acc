@@ -81,6 +81,7 @@ class User(Base):
 class Inventory(Base):
     __tablename__ = 'inventory'
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    date = Column(Date, nullable=False)
     project_id = Column(Integer, ForeignKey('projects.id'))
     item_name = Column(String, nullable=False)
     quantity = Column(Integer, nullable=True)

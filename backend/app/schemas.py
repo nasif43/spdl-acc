@@ -151,6 +151,7 @@ class UserUpdate(BaseModel):
 
 class Inventory(BaseModel):
     id: Optional[int] = None
+    date: date
     project_id: int
     item_name: str
     quantity: int
