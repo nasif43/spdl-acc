@@ -3,6 +3,7 @@ import { useState, useEffect } from 'preact/hooks';
 import InventoryCard from '../components/InventoryCard';
 
 const API_URI = 'http://103.191.241.13:4000';
+const forbidden_project_ids = [4,5,6];
 
 function InventoryPage({ project_id }) {
     const [projectName, setProjectName] = useState('');

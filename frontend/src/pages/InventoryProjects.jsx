@@ -4,6 +4,7 @@ import { Link } from 'preact-router';
 import '../styles/ProjectList.css';
 
 const API_URI = 'http://103.191.241.13:4000';
+const forbidden_project_ids = [4,5,6];
 
 function InventoryProjects() {
     const [projects, setProjects] = useState([]);
@@ -40,18 +41,20 @@ function InventoryProjects() {
                 <div>No projects available</div>
             ) : (
                 <div className="project-card-container">
-                    {projects.map((project) => (
-                        <div key={project.id} className="project-card">
-                            <h2>{project.name}</h2>
-                            <p>{project.id}</p>
-                            <p>Location: {project.location}</p>
-                            <p>Start Date: {project.start_date}</p>
-                            <p>Status: {project.status}</p>
-                            <Link href={`/inventory/${project.id}`}>
-                                <button>Warehouse</button>
-                            </Link>
-                        </div>
-                    ))}
+                    {projects
+                        .filter((project) => !forbidden_project_ids.includes(project.id))
+                        .map((project) => (
+                            <div key={project.id} className="project-card">
+                                <h2>{project.name}</h2>
+                                <p>{project.id}</p>
+                                <p>Location: {project.location}</p>
+                                <p>Start Date: {project.start_date}</p>
+                                <p>Status: {project.status}</p>
+                                <Link href={`/inventory/${project.id}`}>
+                                    <button>Warehouse</button>
+                                </Link>
+                            </div>
+                        ))}
                 </div>
             )}
         </div>
