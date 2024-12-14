@@ -65,9 +65,9 @@ function InventoryCard({ project_id }) {
     const handleAddOrUpdateInventory = (e) => {
         e.preventDefault();
         const inventoryData = {
+            date: date,
             project_id: parseInt(project_id),
             item_name: itemName,
-            date: new Date().toISOString(),
             quantity: parseInt(quantity),
             quantity_used: parseInt(quantityUsed),
             notes: notes,
@@ -200,9 +200,9 @@ function InventoryCard({ project_id }) {
                         <tr>
                             <th style={{maxWidth: '10px'}}>Date</th>
                             <th style={{maxWidth: '55px'}}>Item Name</th>
-                            <th style={{maxWidth: '10px'}}>Quantity</th>
-                            <th style={{maxWidth: '10px'}}>Quantity Used</th>
-                            <th style={{maxWidth: '20px'}}>Quantity Remaining</th>
+                            <th style={{maxWidth: '10px'}}>QTY</th>
+                            <th style={{maxWidth: '10px'}}>QTY Used</th>
+                            <th style={{maxWidth: '20px'}}>QTY Remaining</th>
                             <th style={{minWidth: '200px'}}>Notes</th>
                             <th style={{maxWidth: '10px'}}>Actions</th>
                         </tr>
