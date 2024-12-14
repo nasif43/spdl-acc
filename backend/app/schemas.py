@@ -155,6 +155,7 @@ class Inventory(BaseModel):
     item_name: str
     quantity: int
     quantity_used: int
+    notes: Optional[str] = None
 
     class Config:
         from_attributes = True
@@ -166,6 +167,7 @@ class InventoryUpdate(BaseModel):
     item_name: Optional[str] = None
     quantity: Optional[int] = None
     quantity_used: Optional[int] = None
-
+    notes: Optional[str] = None
+    
     class Config:
         from_attributes = True

@@ -85,5 +85,6 @@ class Inventory(Base):
     item_name = Column(String, nullable=False)
     quantity = Column(Integer, nullable=True)
     quantity_used = Column(Integer, nullable=True)
-
+    notes = Column(String, nullable=True)
+    
     project = relationship('Project', back_populates='inventory')

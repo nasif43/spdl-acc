@@ -12,6 +12,7 @@ function InventoryCard({ project_id }) {
     const [itemName, setItemName] = useState('');
     const [quantity, setQuantity] = useState(0);
     const [quantityUsed, setQuantityUsed] = useState(0);
+    const [notes, setNotes] = useState('');
     const [editId, setEditId] = useState(null);
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
@@ -55,6 +56,7 @@ function InventoryCard({ project_id }) {
             item_name: itemName,
             quantity: parseInt(quantity),
             quantity_used: parseInt(quantityUsed),
+            notes: notes,
         };
         const token = localStorage.getItem('token');
         if (!token) {
@@ -125,6 +127,7 @@ function InventoryCard({ project_id }) {
         setItemName(item.item_name);
         setQuantity(item.quantity);
         setQuantityUsed(item.quantity_used);
+        setNotes(item.notes);
         setShowForm(true);
         setShowTable(false);
     };
@@ -134,6 +137,7 @@ function InventoryCard({ project_id }) {
         setItemName('');
         setQuantity(0);
         setQuantityUsed(0);
+        setNotes('');
         setShowForm(false);
         setShowTable(true);
         setError('');
@@ -161,6 +165,7 @@ function InventoryCard({ project_id }) {
                             <th>Quantity</th>
                             <th>Quantity Used</th>
                             <th>Quantity Remaining</th>
+                            <th>Notes</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -176,6 +181,7 @@ function InventoryCard({ project_id }) {
                                     <td>{item.quantity}</td>
                                     <td>{item.quantity_used}</td>
                                     <td>{item.quantity - item.quantity_used}</td>
+                                    <td>{item.notes}</td>
                                     <td>
                                         <button onClick={() => handleEditInventory(item)}>Edit</button>
                                         <button onClick={() => handleDeleteInventory(item.id)}>Delete</button>
@@ -214,6 +220,10 @@ function InventoryCard({ project_id }) {
                     <label>
                         Quantity Used:
                         <input type="number" value={quantityUsed} onChange={(e) => setQuantityUsed(e.target.value)} />
+                    </label>
+                    <label>
+                        Notes:
+                        <textarea value={notes} onChange={(e) => setNotes(e.target.value)} />
                     </label>
                     <div style={{ display: 'flex', gap: '10px' }}>
                         <button type="submit">Save</button>
