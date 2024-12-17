@@ -84,5 +84,7 @@ export const INVENTORY_ITEMS = [
   { value: "Stone", label: "19. পাথর (Stone)" },
   { value: "Pipe fittings", label: "20. পাইপ ফিটিংস (Pipe fittings)" },
   { value: "Thai glass", label: "21. থাই গ্লাস (Thai glass)" },
-  { value: "Bricks", label: "22. ইট (Bricks)" }
+  { value: "Bricks", label: "22. ইট (Bricks)" },
+  { value: "Brick Chips", label: "23. ইটের চিপস (Brick Chips)" },
+  { value: "Working Tools", label: "24. কাজের সরঞ্জাম (Working Tools)" },
 ];

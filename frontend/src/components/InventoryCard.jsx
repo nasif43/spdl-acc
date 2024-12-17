@@ -30,7 +30,7 @@ function InventoryCard({ project_id }) {
         setLoading(true);
         const token = localStorage.getItem('token');
 
-        fetch(`${API_URI}/inventory?project_id=${project_id}`, {
+        fetch(`${API_URI}/inventory/${project_id}`, {
             headers: {
                 'Authorization': `Bearer ${token}`,
             },
@@ -178,8 +178,14 @@ function InventoryCard({ project_id }) {
             <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
                 <label>
                     Item Name:
-                    <input type="text" value={itemNameFilter} onChange={(e) => setItemNameFilter(e.target.value)} placeholder="Search by item name" />
+                    <select style={{height: '2rem', gap: '10px', backgroundColor: '#080550', color: 'white' }} value={itemNameFilter} onChange={(e) => setItemNameFilter(e.target.value)}>
+                        <option value="">All</option>
+                        {INVENTORY_ITEMS.map((item) => (
+                            <option className='filter-drop-down' value={item.value} key={item.value} style={{ fontWeight: 'bold' }}>{item.label}</option>
+                        ))}
+                    </select>
                 </label>
+
                 <label>
                     Notes:
                     <input type="text" value={notesFilter} onChange={(e) => setNotesFilter(e.target.value)} placeholder="Search by notes" />
