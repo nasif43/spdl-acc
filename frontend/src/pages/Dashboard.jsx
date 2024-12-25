@@ -10,8 +10,8 @@ const Dashboard = () => {
   const [outflow, setOutflow] = useState(0);
   const [standing, setStanding] = useState(0);
   const [totalBills, setTotalBills] = useState(0);
-  const [selectedProjects, setSelectedProjects] = useState([0, 1, 2, 3, 7]); // Default selected projects
-  const [selectedProjectNames, setSelectedProjectNames] = useState(["Sarkar Siraj Dream", "Sarker Spire", "Sarker Afroza Heights", "Sarker Avalon", "New Proposed"]);
+  const [selectedProjects, setSelectedProjects] = useState([]); // Default selected projects
+  const [selectedProjectNames, setSelectedProjectNames] = useState([]);
   const [selectedDateRange, setSelectedDateRange] = useState([null, null]);
   const [userRole, setUserRole] = useState('');
   const [projectsLoaded, setProjectsLoaded] = useState(false);
@@ -34,17 +34,26 @@ const Dashboard = () => {
         setProjectsLoaded(true);
       });
   }, []);
-
+  useEffect(() => {
+    if (projectsLoaded && projects.length > 0) {
+      const defaultProjectIds = [0, 1, 2, 3, 7];
+      const availableDefaultProjects = projects
+        .filter(project => defaultProjectIds.includes(project.id))
+        .map(project => project.id);
+      setSelectedProjects(availableDefaultProjects);
+      setSelectedProjectNames(projects
+        .filter(project => availableDefaultProjects.includes(project.id))
+        .map(project => project.name)
+      );
+    }
+  }, [projectsLoaded, projects]);
+  
   const applyFilters = () => {
     let filtered = projects;
     if (selectedProjects.length > 0) {
-      filtered = filtered.filter((project) => {
-        return selectedProjects.includes(project.id);
-      });
-}
-  setFilteredProjects(filtered);
-  calculateMetrics(filtered);
-
+      filtered = filtered.filter((project) => selectedProjects.includes(project.id));
+    }
+  
     if (selectedDateRange[0] && selectedDateRange[1]) {
       const [startDate, endDate] = selectedDateRange;
       filtered = filtered.filter((project) =>
@@ -54,10 +63,10 @@ const Dashboard = () => {
         })
       );
     }
-
+  
     setFilteredProjects(filtered);
     calculateMetrics(filtered);
-  };
+  };  
 
   const calculateMetrics = (projectsToCalculate) => {
     let totalInflow = 0;
@@ -87,13 +96,14 @@ const Dashboard = () => {
     const selectedNames = [];
     for (let i = 0; i < options.length; i++) {
       if (options[i].selected) {
-        selectedValues.push(options[i].value);
+        selectedValues.push(parseInt(options[i].value, 10)); // Convert to integer
         selectedNames.push(options[i].text);
       }
     }
     setSelectedProjects(selectedValues);
     setSelectedProjectNames(selectedNames);
   };
+  
 
   const handleDateRangeChange = (e, index) => {
     setSelectedDateRange((prev) => {
@@ -104,10 +114,11 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    if (projectsLoaded) {
+    if (projectsLoaded && projects.length > 0) {
       applyFilters();
     }
-  }, [selectedProjects, selectedDateRange, projectsLoaded]);
+  }, [selectedProjects, selectedDateRange, projectsLoaded, projects]);
+  
 
   const aggregateDailyBills = () => {
     const billMap = new Map();
