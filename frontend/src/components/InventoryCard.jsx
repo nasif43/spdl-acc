@@ -205,12 +205,12 @@ function InventoryCard({ project_id }) {
                     <thead>
                         <tr>
                             <th style={{maxWidth: '10px'}}>Date</th>
-                            <th style={{maxWidth: '55px'}}>Item Name</th>
-                            <th style={{maxWidth: '10px'}}>QTY</th>
-                            <th style={{maxWidth: '10px'}}>QTY Used</th>
-                            <th style={{maxWidth: '20px'}}>QTY Remaining</th>
-                            <th style={{minWidth: '200px'}}>Notes</th>
-                            <th style={{maxWidth: '10px'}}>Actions</th>
+                            <th style={{minWidth: '55px'}}>Item Name</th>
+                            <th style={{minWidth: '25px'}}>QTY</th>
+                            <th style={{minWidth: '20px'}}>QTY Used</th>
+                            <th style={{minWidth: '25px'}}>QTY Remaining</th>
+                            <th style={{minWidth: '150px'}}>Notes</th>
+                            <th className="actions-column" style={{minWidth: '200px'}}>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -227,7 +227,7 @@ function InventoryCard({ project_id }) {
                                     <td>{item.quantity_used}</td>
                                     <td>{item.quantity - item.quantity_used}</td>
                                     <td>{item.notes}</td>
-                                    <td>
+                                    <td className="actions-column">
                                         <button onClick={() => handleEditInventory(item)}>Edit</button>
                                         <button onClick={() => handleDeleteInventory(item.id)}>Delete</button>
                                     </td>
